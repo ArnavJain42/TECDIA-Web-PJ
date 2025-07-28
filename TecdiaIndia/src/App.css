@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bitcount+Prop+Single:wght@100..900&family=Michroma&family=Playwrite+AU+QLD:wght@100..400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bitcount+Prop+Single:wght@100..900&family=Luckiest+Guy&family=Michroma&family=Playwrite+AU+QLD:wght@100..400&display=swap');
 @font-face {
   font-family: 'SuperSchool';
   src: url('./fonts/SuperSchoolPaperPlane-BWRl3.ttf') format('truetype');
@@ -15,16 +15,16 @@
   font-weight: 100;
 }
 body[data-theme='theme-en'] {
-  background-color: rgb(0, 85, 255);
+  background-color: rgb(125, 168, 255);
   
 }
 
 body[data-theme='theme-jp'] {
-  background-color: orangered
+  background-color: rgb(255, 95, 37)
 }
 
 body[data-theme='theme-cn'] {
-  background-color: rgb(2, 221, 2);
+  background-color: rgb(81, 255, 81);
 }
 
 
@@ -194,11 +194,12 @@ body[data-theme='theme-cn'] .language-button:not(.active):hover  {
 }
 
 .landing-para{
-  font-family: "Playwrite AU QLD", cursive;
+  font-family: "Luckiest Guy", cursive;
   font-size: 1.5rem;
   width: 800px;
   padding: 0px 20px;
   z-index: 3;
+  letter-spacing: 1px;
 }
 .TecName {
   font-family: 'Bitcount Prop Single', sans-serif;
@@ -249,7 +250,7 @@ body[data-theme='theme-cn'] .language-button:not(.active):hover  {
   flex-direction: column;
 }
 .logo {
-  position: absolute;
+  position: fixed;
   top: 0px;
   left: 80px;
   width: 90px;
@@ -643,7 +644,9 @@ body[data-theme='theme-cn'] .tecdia-brand {
   line-height: 1.75;
   max-width: 32rem;
   margin: 0 auto 3rem auto;
-  font-family: "Playwrite AU QLD", cursive;
+  font-family: "Michroma", sans-serif;
+  font-weight: 500;
+  font-style: bold;
 }
 
 /* Description Responsive */
@@ -666,6 +669,10 @@ body[data-theme='theme-cn'] .tecdia-brand {
   align-items: center;
   gap: 30px;
   flex-wrap: wrap;
+  z-index: 30;
+}
+.tecdia-buttons button {
+  cursor: pointer;
 }
 
 /* Primary Buttons (Company Profile & Apply Now) */
@@ -1159,7 +1166,7 @@ font-weight: 300;
 }
 
 .organization-section {
-  background: #fff8ef;
+  background: #7afc80;
   padding: 4rem 2rem;
 }
 

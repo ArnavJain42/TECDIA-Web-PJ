@@ -14,7 +14,7 @@ export default function ApplyButton() {
 
   return (
     <a
-      href="#apply"
+      href="form"
       className={`apply-btn ${isSmall ? 'small' : ''}`}
       target="_blank"
       rel="noopener noreferrer"

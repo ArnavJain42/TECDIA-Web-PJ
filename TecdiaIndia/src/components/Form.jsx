@@ -736,38 +736,43 @@ function ApplicationForm() {
           </div>
 
           <div style={{ marginBottom: "2rem" }}>
-            <label style={labelStyle}>Resume Upload</label>
-            <div
-              style={{
-                border: "2px dashed #f59e0b",
-                borderRadius: "15px",
-                padding: "2rem",
-                textAlign: "center",
-                background: "#fff7ed",
-              }}
-            >
-              <input
-                type="file"
-                accept=".pdf,.doc,.docx"
-                onChange={handleFileChange}
-                required
-                style={{
-                  opacity: 0,
-                  position: "absolute",
-                  width: "100%",
-                  cursor: "pointer",
-                }}
-              />
-              <div style={{ fontSize: "1.2rem", color: "#f59e0b" }}>
-                {formData.resume
-                  ? formData.resume.name
-                  : "Drag & Drop or Click to Upload"}
-              </div>
-              <div style={{ fontSize: "0.9rem", color: "#6b7280" }}>
-                PDF, DOC, or DOCX only
-              </div>
-            </div>
+        <label style={labelStyle}>Resume Upload</label>
+        <div
+          style={{
+            border: "2px dashed #f59e0b",
+            borderRadius: "15px",
+            padding: "2rem",
+            textAlign: "center",
+            background: "#fff7ed",
+            position: "relative",
+            cursor: "pointer"
+          }}
+        >
+          <input
+            type="file"
+            accept=".pdf,.doc,.docx"
+            onChange={handleFileChange}
+            required
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              opacity: 0,
+              cursor: "pointer"
+            }}
+          />
+          <div style={{ fontSize: "1.2rem", color: "#f59e0b", pointerEvents: "none" }}>
+            {formData.resume
+              ? formData.resume.name
+              : "Drag & Drop or Click to Upload"}
           </div>
+          <div style={{ fontSize: "0.9rem", color: "#6b7280", pointerEvents: "none" }}>
+            PDF, DOC, or DOCX only
+          </div>
+        </div>
+      </div>
 
           <div style={{ marginBottom: "2rem" }}>
             <label style={labelStyle}>Additional Query</label>
@@ -1085,6 +1090,7 @@ function Form() {
       <RecruitmentProcess />
       <AvailablePositions />
       <ApplicationForm />
+      <ScrollingBanner/>
       <Footer />
     </div>
   );

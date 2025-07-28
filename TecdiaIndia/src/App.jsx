@@ -15,6 +15,7 @@ import TypingEffect from "./components/TypingEffect.jsx";
 import TecdiaNumber from "./components/TecdiaNumber.jsx";
 import Footer from "./components/Footer.jsx";
 import OrganizationCulture from "./components/OrganizationCulture.jsx";
+import CherryBlossomTree from "./components/cherryBlossomTree.jsx";
 
 const images = [
   { id: 1, img: "./画像 (1).png" },
@@ -75,6 +76,7 @@ export default function App() {
   // const [progress, setProgress] = useState(0);
   // const [fontSize, setFontSize] = useState("9rem");
   const [language, setLanguage] = useState("en");
+  const [cardSize, setCardSize] = useState(450);
   const navigate = useNavigate();
 
   const initializeGridText = () => {
@@ -147,7 +149,20 @@ export default function App() {
     return () => clearTimeout(timer);
   }, [loaderPhase]);
 
-  
+  useEffect(() => {
+  const handleResize = () => {
+    setCardSize(window.innerWidth < 600 ? 350 : 450);
+  };
+
+  // Set initial size
+  handleResize();
+
+  // Add event listener
+  window.addEventListener('resize', handleResize);
+
+  // Cleanup
+  return () => window.removeEventListener('resize', handleResize);
+}, []);
 
   // useEffect(() => {
   //   const handleScroll = () => {
@@ -251,7 +266,7 @@ if (loaderPhase === 1) {
         <LanguageToggle onLanguageChange={setLanguage} />
       </div>
       <button className="apply-btn"><a
-        href="#apply"
+        href="form"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -279,7 +294,7 @@ if (loaderPhase === 1) {
         <div style={{display:'flex', flexDirection: 'column' , gap: '20px'}}>
           <span className="TecName" id="gridText">{t.logoText}</span>
           <p className="landing-para">{t.landingpara} </p>
-        <button className="join-us">{t.join}</button></div>
+        <button className="join-us" onClick={handleApplyClick}>{t.join}</button></div>
       <div>
       <img
           src="/ChatGPT_Image_Jul_23__2025__01_35_23_PM-removebg-preview.png"
@@ -292,15 +307,16 @@ if (loaderPhase === 1) {
         <MarqueeComponent language={language}></MarqueeComponent>
       </section>
       <section class="tecdia-section">
+        {/* <CherryBlossomTree /> */}
         <div className="whatpic-container">
 
-
+        
   
         <Stack
           randomRotation={true}
           sensitivity={180}
           sendToBackOnClick={true}
-          cardDimensions={{ width: 370, height: 370 }}
+          cardDimensions={{ width: cardSize, height: cardSize }}
           cardsData={images}
         />
         </div>
@@ -317,8 +333,8 @@ if (loaderPhase === 1) {
 
             
             <div class="tecdia-buttons">
-                <button class="btn" onclick={handleProductClick}>{t.profile}</button>
-                <button class="btn" onclick={handleApplyClick}>{t.apply} ↗</button>
+                <button class="btn" onClick={handleProductClick}>{t.profile}</button>
+                <a><button class="btn" onClick={handleApplyClick}>{t.apply} ↗</button></a>
             </div>
         </div>
     </section>
