@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Webkit browsers (Chrome, Safari, Edge) */
+/* Webkit browsers (Chrome, Safari, Edge)
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -22,10 +22,9 @@
   background: rgba(255, 255, 255, 0.5);
 }
 
-/* Firefox */
 html {
   scrollbar-width: thin;
   scrollbar-color: #1100ff #ffae00;
-}
+} */
 
 

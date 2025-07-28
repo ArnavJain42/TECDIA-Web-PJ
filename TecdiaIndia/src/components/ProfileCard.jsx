@@ -217,7 +217,6 @@ const ProfileCardComponent = ({
   }, [onContactClick]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-900 p-8">
       <div
         ref={wrapRef}
         className={`relative w-96 h-[520px] cursor-pointer ${className}`}
@@ -456,7 +455,7 @@ const ProfileCardComponent = ({
         
         <section
           ref={cardRef}
-          className="card-3d card-bg card-border w-full h-full rounded-3xl relative bg-gradient-to-br from-slate-800/95 to-slate-700/95 border border-slate-600/30 overflow-hidden backdrop-blur-sm"
+          className="card-3d card-bg card-border p-10 w-full h-full rounded-3xl relative bg-gradient-to-br from-slate-800/95 to-slate-700/95 border border-slate-600/30 overflow-hidden backdrop-blur-sm"
         >
           <div className="card-texture"></div>
           <div className="card-shine"></div>
@@ -465,7 +464,7 @@ const ProfileCardComponent = ({
           <div className="card-prism"></div>
           <div className="card-sparkle"></div>
           
-          <div className="relative w-full h-full p-8 flex flex-col justify-between z-10">
+          <div className="relative w-full h-full p-8 flex flex-col justify-evenly items-center z-10">
             {/* Main Content */}
             <div className="flex flex-col items-center text-center">
               <img
@@ -491,9 +490,9 @@ const ProfileCardComponent = ({
 
             {/* User Info Section */}
             {showUserInfo && (
-              <div className="w-full bg-slate-800/70 backdrop-blur-md border border-slate-600/40 rounded-2xl p-4 flex justify-between items-center mt-6 shadow-lg">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-slate-500/40">
+              <div className="w-[90%] bg-slate-800/70 backdrop-blur-md border border-slate-600/40 rounded-2xl p-[10px] flex justify-between items-center mt-6 shadow-lg" style={{paddingRight: "10px"}}>
+                <div className="flex items-center gap-3" style={{padding: "5px"}}>
+                  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-slate-500/40 ">
                     <img
                       src={"./president.png"}
                       alt={`${name || "User"} mini avatar`}
@@ -519,6 +518,7 @@ const ProfileCardComponent = ({
                 
                 <button
                   className="bg-gradient-to-r from-slate-700/80 to-slate-600/80 border border-slate-500/50 text-white px-4 py-2 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-300 backdrop-blur-sm hover:from-slate-600/80 hover:to-slate-500/80 hover:border-slate-400/60 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-900/30 active:translate-y-0"
+                  style={{ padding: "4px 8px" }}
                   onClick={handleContactClick}
                   type="button"
                   aria-label={`Contact ${name || "user"}`}
@@ -530,7 +530,6 @@ const ProfileCardComponent = ({
           </div>
         </section>
       </div>
-    </div>
   );
 };
 
