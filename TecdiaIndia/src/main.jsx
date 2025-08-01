@@ -9,6 +9,8 @@ import Product from './components/Product.jsx'
 import TrackApp from './components/TrackApp.jsx'
 import Contact from './components/Contact.jsx'
 import ClickSpark from './components/ClickSpark.jsx'
+import AdminLogin from './components/AdminLogin.jsx'
+import AdminDashboard from './components/AdminDashboard.jsx'
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -27,6 +29,8 @@ createRoot(document.getElementById('root')).render(
         <Route path="/product" element={<Product />} />
         <Route path="/track" element={<TrackApp />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Routes>
     </BrowserRouter>
     </ClickSpark>
