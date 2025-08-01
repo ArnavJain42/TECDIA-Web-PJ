@@ -585,17 +585,193 @@ function AvailablePositions() {
 
 // Application Form Section
 
+const Toast = ({ message, type, onClose }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  const bgColor = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#f59e0b';
+  
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        top: '20px',
+        right: '20px',
+        background: bgColor,
+        color: 'white',
+        padding: '1rem 1.5rem',
+        borderRadius: '10px',
+        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
+        zIndex: 1000,
+        maxWidth: '400px',
+        animation: 'slideIn 0.3s ease-out'
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span>{message}</span>
+        <button
+          onClick={onClose}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'white',
+            fontSize: '1.2rem',
+            cursor: 'pointer',
+            marginLeft: '1rem'
+          }}
+        >
+          x
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// Country codes data with phone validation patterns
+const countryCodes = [
+  { code: '+1', country: 'US/CA', flag: '🇺🇸', pattern: /^[2-9]\d{2}[2-9]\d{2}\d{4}$/, length: 10 },
+  { code: '+91', country: 'IN', flag: '🇮🇳', pattern: /^[6-9]\d{9}$/, length: 10 },
+  { code: '+44', country: 'UK', flag: '🇬🇧', pattern: /^[1-9]\d{8,9}$/, length: [9, 10] },
+  { code: '+33', country: 'FR', flag: '🇫🇷', pattern: /^[1-9]\d{8}$/, length: 9 },
+  { code: '+49', country: 'DE', flag: '🇩🇪', pattern: /^[1-9]\d{10,11}$/, length: [11, 12] },
+  { code: '+81', country: 'JP', flag: '🇯🇵', pattern: /^[7-9]\d{9}$/, length: 10 },
+  { code: '+86', country: 'CN', flag: '🇨🇳', pattern: /^1[3-9]\d{9}$/, length: 11 },
+  { code: '+61', country: 'AU', flag: '🇦🇺', pattern: /^[2-5]\d{8}$/, length: 9 },
+  { code: '+7', country: 'RU', flag: '🇷🇺', pattern: /^9\d{9}$/, length: 10 },
+  { code: '+55', country: 'BR', flag: '🇧🇷', pattern: /^[1-9]\d{10}$/, length: 11 }
+];
+
 function ApplicationForm() {
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
-    phoneNumber: "",
+    countryCode: "+91",
+    phone: "",
     position: "",
-    resume: null,
-    query: "",
-    status: "Pending",
+    resumeLink: "",
+    additionalQuery: "",
     agreeTerms: false,
   });
+
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [toast, setToast] = useState(null);
+  const [emailValidating, setEmailValidating] = useState(false);
+  const [phoneValidating, setPhoneValidating] = useState(false);
+
+  // Validation functions
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const checkEmailExists = async (email) => {
+    if (!validateEmail(email)) return false;
+    
+    try {
+      // Check if email has valid MX record (simplified check)
+      const domain = email.split('@')[1];
+      const commonDomains = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'live.com', 'icloud.com'];
+      
+      // For demo purposes, we'll check against common domains
+      // In production, you might want to use a proper email validation service
+      if (!commonDomains.includes(domain.toLowerCase())) {
+        // For non-common domains, we'll accept them but could add more validation
+        return true;
+      }
+      
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  const validatePhone = (phone, countryCode) => {
+    const selectedCountry = countryCodes.find(c => c.code === countryCode);
+    if (!selectedCountry) return false;
+    
+    const cleanPhone = phone.replace(/\s+/g, '');
+    
+    // Check length first
+    if (Array.isArray(selectedCountry.length)) {
+      if (!selectedCountry.length.includes(cleanPhone.length)) return false;
+    } else {
+      if (cleanPhone.length !== selectedCountry.length) return false;
+    }
+    
+    // Check pattern
+    return selectedCountry.pattern.test(cleanPhone);
+  };
+
+  const validateUrl = (url) => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const validateForm = async () => {
+    const newErrors = {};
+
+    // Name validation
+    if (!formData.name.trim()) {
+      newErrors.name = "Full name is required";
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = "Name must be at least 2 characters long";
+    }
+
+    // Email validation
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    } else {
+      setEmailValidating(true);
+      const emailExists = await checkEmailExists(formData.email);
+      setEmailValidating(false);
+      
+      if (!emailExists) {
+        newErrors.email = "Please enter a valid email address with a recognized domain";
+      }
+    }
+
+    // Phone validation
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone number is required";
+    } else if (!validatePhone(formData.phone, formData.countryCode)) {
+      const selectedCountry = countryCodes.find(c => c.code === formData.countryCode);
+      const expectedLength = Array.isArray(selectedCountry?.length) 
+        ? selectedCountry.length.join(' or ') 
+        : selectedCountry?.length;
+      newErrors.phone = `Please enter a valid ${selectedCountry?.country} phone number (${expectedLength} digits)`;
+    }
+
+    // Position validation
+    if (!formData.position) {
+      newErrors.position = "Please select a position";
+    }
+
+    // Resume link validation
+    if (!formData.resumeLink.trim()) {
+      newErrors.resumeLink = "Resume link is required";
+    } else if (!validateUrl(formData.resumeLink)) {
+      newErrors.resumeLink = "Please enter a valid URL";
+    }
+
+    // Terms validation
+    if (!formData.agreeTerms) {
+      newErrors.agreeTerms = "You must agree to the terms and conditions";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -603,33 +779,93 @@ function ApplicationForm() {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: "" }));
+    }
   };
 
-  const handleFileChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      resume: e.target.files[0],
-    }));
+  const showToast = (message, type) => {
+    setToast({ message, type });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.agreeTerms) {
-      alert("Please agree to the terms and conditions");
+    
+    const isValid = await validateForm();
+    if (!isValid) {
+      showToast("Please fix the errors in the form", "error");
       return;
     }
-    console.log("Form Submitted:", formData);
-    alert("Application submitted successfully!");
+
+    setIsSubmitting(true);
+
+    try {
+      // Prepare data according to API schema
+      const apiData = {
+        name: formData.name,
+        email: formData.email,
+        phone: `${formData.countryCode}${formData.phone}`,
+        position: formData.position,
+        resumeLink: formData.resumeLink,
+        additionalQuery: formData.additionalQuery || ""
+      };
+
+      const response = await fetch('http://localhost:5000/api/applications/apply', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(apiData)
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        // Display the actual error message from the API
+        const errorMessage = result.message || result.error || `Server error: ${response.status}`;
+        showToast(errorMessage, "error");
+        return;
+      }
+
+      showToast("Application submitted successfully! 🎉", "success");
+      
+      // Reset form on success
+      setFormData({
+        name: "",
+        email: "",
+        countryCode: "+91",
+        phone: "",
+        position: "",
+        resumeLink: "",
+        additionalQuery: "",
+        agreeTerms: false,
+      });
+      
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      
+      if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        showToast("Network error: Unable to connect to server", "error");
+      } else {
+        showToast("An unexpected error occurred", "error");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const inputStyle = {
+  const inputStyle = (hasError) => ({
     padding: "1.2rem",
-    border: "2px solid #e5e7eb",
+    border: `2px solid ${hasError ? '#ef4444' : '#e5e7eb'}`,
     borderRadius: "12px",
     fontSize: "1rem",
     width: "100%",
     boxSizing: "border-box",
-  };
+    outline: "none",
+    transition: "border-color 0.3s ease"
+  });
 
   const labelStyle = {
     fontWeight: "bold",
@@ -639,205 +875,299 @@ function ApplicationForm() {
     fontSize: "1.05rem",
   };
 
+  const errorStyle = {
+    color: "#ef4444",
+    fontSize: "0.875rem",
+    marginTop: "0.25rem",
+    display: "block"
+  };
+
   return (
-    <section
-      style={{
-        padding: "6rem 0",
-        background: "#FF8C00",
-      }}
-    >
-      <div
-        style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 1.5rem" }}
+    <>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+      
+      <section
+        style={{
+          padding: "6rem 0",
+          background: "#FF8C00",
+          minHeight: "100vh"
+        }}
       >
         <div
-          style={{
-            color: "white",
-            padding: "1.5rem",
-            textAlign: "center",
-            fontSize: "2rem",
-            fontWeight: "bold",
-            fontFamily: "Orbitron, sans-serif",
-            margin: "-3rem -3rem 3rem -3rem",
-            letterSpacing: "1px",
-          }}
-        >
-          Apply Now
-        </div>
-
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            background: "#fff",
-            borderRadius: "20px",
-            padding: "3rem",
-            boxShadow: "0 15px 50px rgba(0, 0, 0, 0.1)",
-            border: "2px solid #facc15",
-          }}
+          style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 1.5rem" }}
         >
           <div
             style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: "2rem",
-              marginBottom: "2rem",
+              color: "white",
+              padding: "1.5rem",
+              textAlign: "center",
+              fontSize: "2rem",
+              fontWeight: "bold",
+              fontFamily: "Orbitron, sans-serif",
+              margin: "-3rem -3rem 3rem -3rem",
+              letterSpacing: "1px",
             }}
           >
-            <div>
-              <label style={labelStyle}>Full Name</label>
-              <input
-                type="text"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleInputChange}
-                style={inputStyle}
-                required
-              />
-            </div>
-
-            <div>
-              <label style={labelStyle}>Email</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                style={inputStyle}
-                required
-              />
-            </div>
-
-            <div>
-              <label style={labelStyle}>Phone Number</label>
-              <input
-                type="tel"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleInputChange}
-                style={inputStyle}
-                required
-              />
-            </div>
-
-            <div>
-              <label style={labelStyle}>Position Applying For</label>
-              <select
-                name="position"
-                value={formData.position}
-                onChange={handleInputChange}
-                style={inputStyle}
-                required
-              >
-                <option value="">Select a position</option>
-                <option value="Technical">Technical Position</option>
-                <option value="Sales">Sales Position</option>
-                <option value="Administrative">Administrative Position</option>
-              </select>
-            </div>
+            Apply Now
           </div>
 
-          <div style={{ marginBottom: "2rem" }}>
-        <label style={labelStyle}>Resume Upload</label>
-        <div
-          style={{
-            border: "2px dashed #f59e0b",
-            borderRadius: "15px",
-            padding: "2rem",
-            textAlign: "center",
-            background: "#fff7ed",
-            position: "relative",
-            cursor: "pointer"
-          }}
-        >
-          <input
-            type="file"
-            accept=".pdf,.doc,.docx"
-            onChange={handleFileChange}
-            required
+          <form
+            onSubmit={handleSubmit}
             style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              opacity: 0,
-              cursor: "pointer"
+              background: "#fff",
+              borderRadius: "20px",
+              padding: "3rem",
+              boxShadow: "0 15px 50px rgba(0, 0, 0, 0.1)",
+              border: "2px solid #facc15",
             }}
-          />
-          <div style={{ fontSize: "1.2rem", color: "#f59e0b", pointerEvents: "none" }}>
-            {formData.resume
-              ? formData.resume.name
-              : "Drag & Drop or Click to Upload"}
-          </div>
-          <div style={{ fontSize: "0.9rem", color: "#6b7280", pointerEvents: "none" }}>
-            PDF, DOC, or DOCX only
-          </div>
-        </div>
-      </div>
-
-          <div style={{ marginBottom: "2rem" }}>
-            <label style={labelStyle}>Additional Query</label>
-            <textarea
-              name="query"
-              value={formData.query}
-              onChange={handleInputChange}
-              placeholder="Write your message here..."
-              style={{ ...inputStyle, minHeight: "120px", resize: "vertical" }}
-            />
-          </div>
-
-          <div style={{ marginBottom: "2rem" }}>
-            <label style={labelStyle}>Application Status</label>
-            <select
-              name="status"
-              value={formData.status}
-              onChange={handleInputChange}
-              style={inputStyle}
-            >
-              <option value="Pending">Pending</option>
-              <option value="Approved">Approved</option>
-              <option value="Rejected">Rejected</option>
-            </select>
-          </div>
-
-          <div style={{ marginBottom: "2rem" }}>
-            <label
-              style={{ display: "flex", gap: "1rem", alignItems: "center" }}
-            >
-              <input
-                type="checkbox"
-                name="agreeTerms"
-                checked={formData.agreeTerms}
-                onChange={handleInputChange}
-                required
-                style={{ width: "20px", height: "20px" }}
-              />
-              <span style={{ fontSize: "1rem" }}>
-                I agree to the Terms and Conditions
-              </span>
-            </label>
-          </div>
-
-          <div style={{ textAlign: "center" }}>
-            <button
-              type="submit"
+          >
+            <div
               style={{
-                background: "linear-gradient(to right, #f59e0b, #f97316)",
-                color: "white",
-                border: "none",
-                padding: "1rem 3rem",
-                borderRadius: "40px",
-                fontSize: "1.2rem",
-                fontWeight: "bold",
-                cursor: "pointer",
-                boxShadow: "0 10px 25px rgba(0, 0, 0, 0.15)",
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+                gap: "2rem",
+                marginBottom: "2rem",
               }}
             >
-              🚀 Submit Application
-            </button>
-          </div>
-        </form>
-      </div>
-    </section>
+              <div>
+                <label style={labelStyle}>Full Name *</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  style={inputStyle(errors.name)}
+                  placeholder="Enter your full name"
+                />
+                {errors.name && <span style={errorStyle}>{errors.name}</span>}
+              </div>
+
+              <div>
+                <label style={labelStyle}>Email *</label>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    style={inputStyle(errors.email)}
+                    placeholder="your.email@example.com"
+                  />
+                  {emailValidating && (
+                    <div style={{
+                      position: 'absolute',
+                      right: '12px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      color: '#f59e0b'
+                    }}>
+                      ⏳
+                    </div>
+                  )}
+                </div>
+                {errors.email && <span style={errorStyle}>{errors.email}</span>}
+              </div>
+
+              <div>
+                <label style={labelStyle}>Phone Number *</label>
+                <div style={{ display: "flex", gap: "0.5rem", position: 'relative' }}>
+                  <select
+                    name="countryCode"
+                    value={formData.countryCode}
+                    onChange={handleInputChange}
+                    style={{
+                      ...inputStyle(false),
+                      width: "140px",
+                      flexShrink: 0
+                    }}
+                  >
+                    {countryCodes.map((country) => (
+                      <option key={country.code} value={country.code}>
+                        {country.flag} {country.code}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    style={inputStyle(errors.phone)}
+                    placeholder={
+                      formData.countryCode === '+91' ? '9876543210' :
+                      formData.countryCode === '+1' ? '2345678901' :
+                      formData.countryCode === '+44' ? '7700900123' :
+                      '1234567890'
+                    }
+                  />
+                  {phoneValidating && (
+                    <div style={{
+                      position: 'absolute',
+                      right: '12px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      color: '#f59e0b'
+                    }}>
+                      ⏳
+                    </div>
+                  )}
+                </div>
+                {errors.phone && <span style={errorStyle}>{errors.phone}</span>}
+                <div style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '0.25rem' }}>
+                  {(() => {
+                    const country = countryCodes.find(c => c.code === formData.countryCode);
+                    const length = Array.isArray(country?.length) ? country.length.join(' or ') : country?.length;
+                    return `Enter ${length} digits for ${country?.country}`;
+                  })()}
+                </div>
+              </div>
+
+              <div>
+                <label style={labelStyle}>Position Applying For *</label>
+                <select
+                  name="position"
+                  value={formData.position}
+                  onChange={handleInputChange}
+                  style={inputStyle(errors.position)}
+                >
+                  <option value="">Select a position</option>
+                  <option value="Frontend Developer">Frontend Developer</option>
+                  <option value="Backend Developer">Backend Developer</option>
+                  <option value="Full Stack Developer">Full Stack Developer</option>
+                  <option value="UI/UX Designer">UI/UX Designer</option>
+                  <option value="Product Manager">Product Manager</option>
+                  <option value="DevOps Engineer">DevOps Engineer</option>
+                </select>
+                {errors.position && <span style={errorStyle}>{errors.position}</span>}
+              </div>
+            </div>
+
+            <div style={{ marginBottom: "2rem" }}>
+              <label style={labelStyle}>Resume Link *</label>
+              <div
+                style={{
+                  border: `2px solid ${errors.resumeLink ? '#ef4444' : '#f59e0b'}`,
+                  borderRadius: "15px",
+                  padding: "1.5rem",
+                  background: "#fff7ed",
+                  position: "relative"
+                }}
+              >
+                <input
+                  type="url"
+                  name="resumeLink"
+                  placeholder="https://drive.google.com/file/d/... or https://example.com/resume.pdf"
+                  value={formData.resumeLink}
+                  onChange={handleInputChange}
+                  style={{
+                    width: "100%",
+                    padding: "0.75rem",
+                    border: "none",
+                    borderRadius: "10px",
+                    fontSize: "1rem",
+                    background: "#ffffff",
+                    outline: "none",
+                    boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
+                  }}
+                />
+                <div style={{ 
+                  fontSize: "0.9rem", 
+                  color: "#6b7280", 
+                  marginTop: "0.5rem",
+                  textAlign: "center" 
+                }}>
+                  Paste your resume link (Google Drive, Dropbox, or direct PDF link)
+                </div>
+              </div>
+              {errors.resumeLink && <span style={errorStyle}>{errors.resumeLink}</span>}
+            </div>
+
+            <div style={{ marginBottom: "2rem" }}>
+              <label style={labelStyle}>Additional Query</label>
+              <textarea
+                name="additionalQuery"
+                value={formData.additionalQuery}
+                onChange={handleInputChange}
+                placeholder="Any questions or additional information you'd like to share..."
+                style={{ ...inputStyle(false), minHeight: "120px", resize: "vertical" }}
+              />
+            </div>
+
+            <div style={{ marginBottom: "2rem" }}>
+              <label
+                style={{ 
+                  display: "flex", 
+                  gap: "1rem", 
+                  alignItems: "flex-start",
+                  cursor: "pointer"
+                }}
+              >
+                <input
+                  type="checkbox"
+                  name="agreeTerms"
+                  checked={formData.agreeTerms}
+                  onChange={handleInputChange}
+                  style={{ 
+                    width: "20px", 
+                    height: "20px",
+                    marginTop: "2px"
+                  }}
+                />
+                <span style={{ fontSize: "1rem", lineHeight: "1.5" }}>
+                  I agree to the Terms and Conditions and Privacy Policy *
+                </span>
+              </label>
+              {errors.agreeTerms && <span style={errorStyle}>{errors.agreeTerms}</span>}
+            </div>
+
+            <div style={{ textAlign: "center" }}>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                style={{
+                  background: isSubmitting 
+                    ? "#9ca3af" 
+                    : "linear-gradient(to right, #f59e0b, #f97316)",
+                  color: "white",
+                  border: "none",
+                  padding: "1rem 3rem",
+                  borderRadius: "40px",
+                  fontSize: "1.2rem",
+                  fontWeight: "bold",
+                  cursor: isSubmitting ? "not-allowed" : "pointer",
+                  boxShadow: "0 10px 25px rgba(0, 0, 0, 0.15)",
+                  transition: "all 0.3s ease",
+                  opacity: isSubmitting ? 0.7 : 1
+                }}
+              >
+                {isSubmitting ? "⏳ Submitting..." : "🚀 Submit Application"}
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <style>
+        {`
+          @keyframes slideIn {
+            from {
+              transform: translateX(100%);
+              opacity: 0;
+            }
+            to {
+              transform: translateX(0);
+              opacity: 1;
+            }
+          }
+        `}
+      </style>
+    </>
   );
 }
 

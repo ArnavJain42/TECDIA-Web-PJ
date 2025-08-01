@@ -16,6 +16,7 @@ import TecdiaNumber from "./components/TecdiaNumber.jsx";
 import Footer from "./components/Footer.jsx";
 import OrganizationCulture from "./components/OrganizationCulture.jsx";
 import CherryBlossomTree from "./components/cherryBlossomTree.jsx";
+import { Search, User, Mail, Phone, MapPin, FileText, MessageCircle, Loader2, X } from 'lucide-react';
 
 const images = [
   { id: 1, img: "./画像 (1).png" },
@@ -70,6 +71,260 @@ const translations = {
   },
 };
 
+const ApplicationStatusModal = ({ isOpen, onClose }) => {
+  const [formData, setFormData] = useState({
+    email: '',
+    PIN: ''
+  });
+  const [applicationData, setApplicationData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async () => {
+    if (!formData.email || !formData.PIN) {
+      setError('Please fill in both email and PIN fields.');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+    setApplicationData(null);
+
+    try {
+      const response = await fetch('http://localhost:5000/api/applications/check-status', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setApplicationData(data);
+    } catch (err) {
+      setError('Failed to fetch application status. Please check your credentials and try again.');
+      console.error('Error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleClose = () => {
+    setFormData({ email: '', PIN: '' });
+    setApplicationData(null);
+    setError('');
+    setLoading(false);
+    onClose();
+  };
+
+  const getStatusColor = (status) => {
+    switch (status?.toLowerCase()) {
+      case 'approved':
+        return 'text-green-600 bg-green-50 border-green-200';
+      case 'rejected':
+        return 'text-red-600 bg-red-50 border-red-200';
+      case 'pending':
+        return 'text-yellow-600 bg-yellow-50 border-yellow-200';
+      default:
+        return 'text-gray-600 bg-gray-50 border-gray-200';
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto">
+      {/* Backdrop */}
+      <div 
+        className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+        onClick={handleClose}
+      ></div>
+      
+      {/* Modal */}
+      <div className="flex min-h-full items-center justify-center p-4">
+        <div className="relative bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          {/* Header */}
+          <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 rounded-t-lg">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-gray-800">
+                Check Application Status
+              </h2>
+              <button
+                onClick={handleClose}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="px-6 py-4">
+            {!applicationData ? (
+              // Form Section
+              <div>
+                <p className="text-gray-600 mb-6">
+                  Enter your email and PIN to check your application status
+                </p>
+
+                <div className="space-y-4">
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="Enter your email address"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="PIN" className="block text-sm font-medium text-gray-700 mb-1">
+                      PIN
+                    </label>
+                    <input
+                      type="text"
+                      id="PIN"
+                      name="PIN"
+                      value={formData.PIN}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="Enter your PIN"
+                    />
+                  </div>
+
+                  {error && (
+                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+                      {error}
+                    </div>
+                  )}
+
+                  <button
+                    onClick={handleSubmit}
+                    disabled={loading}
+                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="animate-spin -ml-1 mr-2 h-4 w-4" />
+                        Checking Status...
+                      </>
+                    ) : (
+                      <>
+                        <Search className="-ml-1 mr-2 h-4 w-4" />
+                        Check Status
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              // Application Details Section
+              <div>
+                <div className="border-b border-gray-200 pb-4 mb-6">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xl font-bold text-gray-800 flex items-center">
+                      <User className="mr-2 h-5 w-5" />
+                      {applicationData.name}
+                    </h3>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(applicationData.status)}`}>
+                      {applicationData.status}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-center">
+                    <Mail className="h-5 w-5 text-gray-400 mr-3 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm text-gray-500">Email</p>
+                      <p className="text-gray-800">{applicationData.email}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center">
+                    <Phone className="h-5 w-5 text-gray-400 mr-3 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm text-gray-500">Phone</p>
+                      <p className="text-gray-800">{applicationData.phone}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center">
+                    <MapPin className="h-5 w-5 text-gray-400 mr-3 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm text-gray-500">Position</p>
+                      <p className="text-gray-800">{applicationData.position}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center">
+                    <FileText className="h-5 w-5 text-gray-400 mr-3 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm text-gray-500">Resume</p>
+                      <a 
+                        href={applicationData.resumeLink} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 underline"
+                      >
+                        View Resume
+                      </a>
+                    </div>
+                  </div>
+
+                  {applicationData.additionalQuery && (
+                    <div className="flex items-start">
+                      <MessageCircle className="h-5 w-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" />
+                      <div className="flex-1">
+                        <p className="text-sm text-gray-500 mb-1">Additional Query</p>
+                        <p className="text-gray-800">{applicationData.additionalQuery}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-gray-200 flex justify-between">
+                  <button
+                    onClick={() => setApplicationData(null)}
+                    className="text-blue-600 hover:text-blue-800 font-medium"
+                  >
+                    Check Another Application
+                  </button>
+                  <button
+                    onClick={handleClose}
+                    className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const sectionRef = useRef(null);
@@ -77,6 +332,7 @@ export default function App() {
   // const [fontSize, setFontSize] = useState("9rem");
   const [language, setLanguage] = useState("en");
   const [cardSize, setCardSize] = useState(450);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const initializeGridText = () => {
@@ -242,9 +498,12 @@ if (loaderPhase === 1) {
         <div className="menu-content">
           <div className="menu-left">
             <ul>
-              {t.menuLeft.map((item, idx) => (
-                <li key={idx}>{item}</li>
-              ))}
+              <button 
+              onClick={() => setIsModalOpen(true)}
+              className="border border-blue-600 text-blue-600 px-6 py-2 rounded-md hover:bg-blue-50"
+            >
+              Check Application Status
+            </button>
             </ul>
           </div>
           <div className="menu-right">
@@ -272,7 +531,10 @@ if (loaderPhase === 1) {
       >
         {t.apply} <span className="arrow">↗</span>
       </a></button>
-
+<ApplicationStatusModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} style={{zindex: 2000}}
+      />
       {/* Scroll Text */}
       {/* <div
         className={`scroll-text ${progress === 1 ? "navbar-style" : ""}`}
