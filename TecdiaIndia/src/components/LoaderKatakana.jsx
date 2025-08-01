@@ -11,33 +11,28 @@ const LoaderKatakana = ({
     <div className="fixed inset-0 h-screen w-screen flex flex-col items-center justify-center bg-black z-[9999] overflow-hidden">
       {/* Animated gradient background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Left gradient */}
-        <div className="absolute left-0 top-1/4 w-[40vw] h-[40vh] bg-gradient-to-br from-yellow-400/30 to-orange-600/30 rounded-full blur-[100px] opacity-50 animate-[pulse_8s_ease-in-out_infinite]"></div>
-        
-        {/* Right gradient */}
-        <div className="absolute right-0 bottom-1/4 w-[40vw] h-[40vh] bg-gradient-to-bl from-yellow-400/20 to-orange-600/20 rounded-full blur-[100px] opacity-50 animate-[pulse_6s_ease-in-out_infinite_2s]"></div>
         
         {/* Center glow */}
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/0 via-yellow-400/5 to-orange-600/0 opacity-30"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/0 via-blue-400/5 to-oranged-600/0 opacity-30"></div>
       </div>
 
       {/* Main content with hover effects */}
       <div className="group relative cursor-default transform transition-all duration-500">
         {/* Glowing background effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/30 to-orange-600/30 rounded-full blur-lg opacity-0 group-hover:opacity-60 transition-all duration-500"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-orange-600/20 rounded-full blur opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/30 to-orange-600/30 rounded-full blur-lg opacity-0 "></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-orange-600/20 rounded-full blur opacity-30 "></div>
 
-        <div className="relative bg-black/40 group-hover:bg-black/30 backdrop-blur-xl rounded-2xl p-8 border border-white/10 group-hover:border-yellow-400/40 transition-all duration-500">
-          <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/0 via-yellow-400/5 to-orange-600/0 group-hover:from-yellow-400/10 group-hover:via-yellow-400/20 group-hover:to-orange-600/10 transition-all duration-500 rounded-2xl"></div>
+        <div className="relative bg-black/40 rounded-0xl p-4 border border-white/10 ">
+          <div className="absolute inset-0  rounded-0xl"></div>
 
-          <div className="relative z-10 text-center">
+          <div className="relative z-10 text-center w-[320px] h-[150px]">
             <DecryptedText 
               text={text} 
               speed={speed} 
               characterSet={characterSet}
             >
               {(decrypted) => (
-                <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent tracking-wider group-hover:drop-shadow-lg transition-all duration-300">
+                <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-green-400 to-orange-500 bg-clip-text text-transparent tracking-wider group-hover:drop-shadow-lg transition-all duration-300">
                   {decrypted}
                 </h1>
               )}

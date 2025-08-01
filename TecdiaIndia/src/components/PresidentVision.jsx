@@ -29,7 +29,7 @@ const PresidentVision = () => {
 
       {/* Main Content */}
       <div className="content-container">
-        <div className="header">
+        <div className="header-shingo">
           <h1 className="main-title">President's Vision</h1>
           <div className="title-underline"></div>
         </div>

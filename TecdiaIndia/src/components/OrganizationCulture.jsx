@@ -1,4 +1,4 @@
-
+import CircularGallery from './CircularGallery'
 import { Laptop, Umbrella, Calendar, Clock } from 'lucide-react';
 
 export default function OrganizationCulture() {
@@ -8,19 +8,13 @@ export default function OrganizationCulture() {
         <div className="organization-header">
           <h1 className="organization-title">TECDIA'S</h1>
           <h2 className="organization-subtitle">ORGANIZATION CULTURE</h2>
-          {/* <div className="organization-tagline">
-            <span>Fusion of India & Japan</span>
-          </div> */}
-        </div>
+         
 
-        {/* <div className="organization-reminder">
-          This needs to be done <br />
-          This needs to be done <br />
-          This needs to be done <br />
-          This needs to be done <br />
-          This needs to be done <br />
-          This needs to be done <br />
-        </div> */}
+          <div style={{ height: '600px', position: 'relative' }}>
+            <CircularGallery bend={3} textColor="#000000" borderRadius={0.05} scrollEase={0.02}/>
+          </div>
+                  </div>
+
 
         <div className="organization-section-content">
           <div className="organization-heading-box">

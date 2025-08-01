@@ -129,59 +129,59 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
     onClose();
   };
 
-  const getStatusColor = (status) => {
+  const getStatusClass = (status) => {
     switch (status?.toLowerCase()) {
       case 'approved':
-        return 'text-green-600 bg-green-50 border-green-200';
+        return 'status-approved';
       case 'rejected':
-        return 'text-red-600 bg-red-50 border-red-200';
+        return 'status-rejected';
       case 'pending':
-        return 'text-yellow-600 bg-yellow-50 border-yellow-200';
+        return 'status-pending';
       default:
-        return 'text-gray-600 bg-gray-50 border-gray-200';
+        return 'status-default';
     }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
+    <div className="modal-overlay">
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+        className="modal-backdrop"
         onClick={handleClose}
       ></div>
       
       {/* Modal */}
-      <div className="flex min-h-full items-center justify-center p-4">
-        <div className="relative bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="modal-container">
+        <div className="modal-content">
           {/* Header */}
-          <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 rounded-t-lg">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-gray-800">
+          <div className="modal-header">
+            <div className="modal-header-content">
+              <h2 className="modal-title">
                 Check Application Status
               </h2>
               <button
                 onClick={handleClose}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="close-button"
               >
-                <X className="h-6 w-6" />
+                <X className="close-icon" />
               </button>
             </div>
           </div>
 
           {/* Content */}
-          <div className="px-6 py-4">
+          <div className="modal-body">
             {!applicationData ? (
               // Form Section
               <div>
-                <p className="text-gray-600 mb-6">
+                <p className="form-description">
                   Enter your email and PIN to check your application status
                 </p>
 
-                <div className="space-y-4">
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                <div className="form-fields">
+                  <div className="field-group">
+                    <label htmlFor="email" className="field-label">
                       Email Address
                     </label>
                     <input
@@ -190,13 +190,13 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="field-input"
                       placeholder="Enter your email address"
                     />
                   </div>
 
-                  <div>
-                    <label htmlFor="PIN" className="block text-sm font-medium text-gray-700 mb-1">
+                  <div className="field-group">
+                    <label htmlFor="PIN" className="field-label">
                       PIN
                     </label>
                     <input
@@ -205,13 +205,13 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
                       name="PIN"
                       value={formData.PIN}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="field-input"
                       placeholder="Enter your PIN"
                     />
                   </div>
 
                   {error && (
-                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+                    <div className="error-message">
                       {error}
                     </div>
                   )}
@@ -219,16 +219,16 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
                   <button
                     onClick={handleSubmit}
                     disabled={loading}
-                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                    className={`submit-button ${loading ? 'submit-button-loading' : ''}`}
                   >
                     {loading ? (
                       <>
-                        <Loader2 className="animate-spin -ml-1 mr-2 h-4 w-4" />
+                        <Loader2 className="button-icon button-icon-loading" />
                         Checking Status...
                       </>
                     ) : (
                       <>
-                        <Search className="-ml-1 mr-2 h-4 w-4" />
+                        <Search className="button-icon" />
                         Check Status
                       </>
                     )}
@@ -238,52 +238,52 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
             ) : (
               // Application Details Section
               <div>
-                <div className="border-b border-gray-200 pb-4 mb-6">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-bold text-gray-800 flex items-center">
-                      <User className="mr-2 h-5 w-5" />
+                <div className="application-header">
+                  <div className="application-header-content">
+                    <h3 className="applicant-name">
+                      <User className="applicant-icon" />
                       {applicationData.name}
                     </h3>
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(applicationData.status)}`}>
+                    <span className={`status-badge ${getStatusClass(applicationData.status)}`}>
                       {applicationData.status}
                     </span>
                   </div>
                 </div>
 
-                <div className="space-y-4">
-                  <div className="flex items-center">
-                    <Mail className="h-5 w-5 text-gray-400 mr-3 flex-shrink-0" />
-                    <div>
-                      <p className="text-sm text-gray-500">Email</p>
-                      <p className="text-gray-800">{applicationData.email}</p>
+                <div className="application-details">
+                  <div className="detail-item">
+                    <Mail className="detail-icon" />
+                    <div className="detail-content">
+                      <p className="detail-label">Email</p>
+                      <p className="detail-value">{applicationData.email}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center">
-                    <Phone className="h-5 w-5 text-gray-400 mr-3 flex-shrink-0" />
-                    <div>
-                      <p className="text-sm text-gray-500">Phone</p>
-                      <p className="text-gray-800">{applicationData.phone}</p>
+                  <div className="detail-item">
+                    <Phone className="detail-icon" />
+                    <div className="detail-content">
+                      <p className="detail-label">Phone</p>
+                      <p className="detail-value">{applicationData.phone}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center">
-                    <MapPin className="h-5 w-5 text-gray-400 mr-3 flex-shrink-0" />
-                    <div>
-                      <p className="text-sm text-gray-500">Position</p>
-                      <p className="text-gray-800">{applicationData.position}</p>
+                  <div className="detail-item">
+                    <MapPin className="detail-icon" />
+                    <div className="detail-content">
+                      <p className="detail-label">Position</p>
+                      <p className="detail-value">{applicationData.position}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center">
-                    <FileText className="h-5 w-5 text-gray-400 mr-3 flex-shrink-0" />
-                    <div>
-                      <p className="text-sm text-gray-500">Resume</p>
+                  <div className="detail-item">
+                    <FileText className="detail-icon" />
+                    <div className="detail-content">
+                      <p className="detail-label">Resume</p>
                       <a 
                         href={applicationData.resumeLink} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800 underline"
+                        className="resume-link"
                       >
                         View Resume
                       </a>
@@ -291,26 +291,26 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
                   </div>
 
                   {applicationData.additionalQuery && (
-                    <div className="flex items-start">
-                      <MessageCircle className="h-5 w-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" />
-                      <div className="flex-1">
-                        <p className="text-sm text-gray-500 mb-1">Additional Query</p>
-                        <p className="text-gray-800">{applicationData.additionalQuery}</p>
+                    <div className="detail-item detail-item-query">
+                      <MessageCircle className="detail-icon detail-icon-query" />
+                      <div className="detail-content-full">
+                        <p className="detail-label">Additional Query</p>
+                        <p className="detail-value">{applicationData.additionalQuery}</p>
                       </div>
                     </div>
                   )}
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-gray-200 flex justify-between">
+                <div className="modal-footer">
                   <button
                     onClick={() => setApplicationData(null)}
-                    className="text-blue-600 hover:text-blue-800 font-medium"
+                    className="secondary-button"
                   >
                     Check Another Application
                   </button>
                   <button
                     onClick={handleClose}
-                    className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors"
+                    className="primary-button"
                   >
                     Close
                   </button>

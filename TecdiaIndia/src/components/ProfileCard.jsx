@@ -469,7 +469,7 @@ const ProfileCardComponent = ({
             <div className="flex flex-col items-center text-center">
               <img
                 className="w-44 h-44 rounded-full object-cover mb-6 border-2 border-slate-500/40 shadow-2xl"
-                src= {"./president.png"}
+                src= {"./画像 (2).png"}
                 alt={"Shingo"}
                 loading="lazy"
                 onError={(e) => {
@@ -494,7 +494,7 @@ const ProfileCardComponent = ({
                 <div className="flex items-center gap-3" style={{padding: "5px"}}>
                   <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-slate-500/40 ">
                     <img
-                      src={"./president.png"}
+                      src={"./画像 (2).png"}
                       alt={`${name || "User"} mini avatar`}
                       className="w-full h-full object-cover"
                       loading="lazy"
