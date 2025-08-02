@@ -15,7 +15,7 @@ import TypingEffect from "./components/TypingEffect.jsx";
 import TecdiaNumber from "./components/TecdiaNumber.jsx";
 import Footer from "./components/Footer.jsx";
 import OrganizationCulture from "./components/OrganizationCulture.jsx";
-import CherryBlossomTree from "./components/cherryBlossomTree.jsx";
+import CherryBlossomTree from "./components/CherryBlossomTree.jsx";
 import { Search, User, Mail, Phone, MapPin, FileText, MessageCircle, Loader2, X } from 'lucide-react';
 
 const images = [
