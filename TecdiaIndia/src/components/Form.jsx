@@ -1,65 +1,215 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect, useRef } from "react";
+import LanguageToggle from "./LanguageToggle";
+import Footer from "./Footer";
 
-function Header() {
-  return (
-    <header
-      style={{
-        background:
-          "linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #3b82f6 100%)",
-        padding: "1rem 0",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 1000,
-        boxShadow: "0 4px 30px rgba(37, 99, 235, 0.4)",
-        backdropFilter: "blur(10px)",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "1000px",
-          margin: "0 auto",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "1rem",
-          overflow: "hidden",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <div
-            style={{
-              fontSize: "2.5rem",
-              fontWeight: 900,
-              fontFamily: "Orbitron, monospace",
-              letterSpacing: "0.3em",
-              background: "linear-gradient(45deg, #ffffff, #e0e7ff)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              textShadow: "0 0 20px rgba(255, 255, 255, 0.5)",
-            }}
-          >
-            TECDIA
-          </div>
-          <div
-            style={{
-              fontSize: "1rem",
-              color: "#fbbf24",
-              fontFamily: "Noto Sans JP, sans-serif",
-              fontWeight: 500,
-            }}
-          >
-            テクディア
-          </div>
-        </div>
-      </div>
-    </header>
-  );
-}
+const translations = {
+  en: {
+    apply: "Back to home",
+    logoText: "TECDIA",
+    herotext1: "Your 'Let's do this' will change the world",
+    herotext2: "APPLICATION FORM",
+    herotext3: "Join our journey to surprise the world with unconventional ideas and team power.",
+    recruithead: "Recruitment Process",
+    retitle1: "Entry/Application",
+    retitle2: "Company Information Session",
+    retitle3: "Document Screening",
+    retitle4: "Web Test",
+    retitle5: "First Interview",
+    retitle6: "Final Interview",
+    retitle7: "Job Offer",
+    retext1: "Submit your application through our online form",
+    retext2: "Online or in-person session with company introduction, president talk, and Q&A",
+    retext3: "Send resume or OPEN ES via email or LINE",
+    retext4: "Online assessment of your skills and knowledge",
+    retext5: "One-on-one with HR team member (online available for distant candidates)",
+    retext6: "Personal interview with president (office visit required)",
+    retext7: "Welcome to the TECDIA family!",
+
+    availtitle1: "Technical Position",
+    availtitle2: "Sales Position",
+    availtitle3: "Administrative Position",
+    availitems1:[
+        "Research & Development (R&D)",
+        "Manufacturing/Quality Control",
+        "Quality Assurance",
+        "IT Development",
+      ],
+    availitems2: ["Domestic Sales", "International Sales", "Global Sales"],
+    availitems3: [
+        "Trade Operations / Import & Export",
+        "Production Management",
+        "General Affairs / Administration",
+      ],
+
+    availhead: "Available Positions",
+    errmess1: "Full name is required",
+    errmess2: "Name must be at least 2 characters long",
+    errmess3: "Email is required",
+    errmess4: "Please enter a valid email address",
+    errmess5: "Please enter a valid email address with a recognized domain",
+    errmess6: "Phone number is required",
+    errmess7: "Please enter a valid ${selectedCountry?.country} phone number (${expectedLength} digits)",
+    errmess8: "Please select a position",
+    errmess9: "Resume link is required",
+    errmess10: "Please enter a valid URL",
+    errmess11: "You must agree to the terms and conditions",
+    toasterr1: "Please fix the errors in the form",
+    toasterr2: "Application submitted successfully! 🎉",
+    toasterr3: "Network error: Unable to connect to server",
+    toasterr4: "An unexpected error occurred",
+    applyhead: "Apply Now",
+    applyname: "Full Name *",
+    applyemail: "Email Address *",
+    applyphone: "Phone Number *",
+    applyposition: "Position Applying For *",
+    applyresume: "Resume Link *",
+    applyterms: "I agree to the terms and conditions *",
+    applyquery: "Additional Query",
+    applysubmit: "🚀 Submit Application",
+    applysubmitting: "⏳ Submitting..." 
+
+
+  },
+  jp: {
+    apply: "ホームに戻る",
+    logoText: "テクダイヤ",
+    herotext1: "あなたの「やろう」は世界を変える",
+    herotext2: "アプリケーションフォーム",
+    herotext3: "常識を覆すアイデアとチームの力で世界を驚かせる旅に参加しよう。",
+    recruithead: "採用プロセス",
+    retitle1: "エントリー/応募",
+    retitle2: "会社説明会",
+    retitle3: "書類選考",
+    retitle4: "Webテスト",
+    retitle5: "一次面接",
+    retitle6: "最終面接",
+    retitle7: "内定",
+    retext1: "オンラインフォームから応募を提出してください",
+    retext2: "会社紹介、社長の話、Q&Aを含むオンラインまたは対面のセッション",
+    retext3: "メールまたはLINEで履歴書またはOPEN ESを送信",
+    retext4: "あなたのスキルと知識を評価するオンラインアセスメント",
+    retext5: "HRチームメンバーとの1対1の面接（遠方の候補者にはオンライン対応）",
+    retext6: "社長との個別面接（オフィス訪問が必要）",
+    retext7: "TECDIAファミリーへようこそ！",
+    availtitle1: "技術職",
+    availtitle2: "営業職",
+    availtitle3: "管理職",
+    availitems1: [
+      "研究開発 (R&D)",
+      "製造/品質管理",
+      "品質保証",
+      "IT開発",
+    ],
+    availitems2: ["国内営業", "国際営業", "グローバル営業"],
+    availitems3: [
+      "貿易業務 / 輸出入",
+      "生産管理",
+      "総務 / 管理",
+    ],
+    availhead: "募集職種",
+    errmess1: "フルネームは必須です",
+    errmess2: "名前は2文字以上でなければなりません",
+    errmess3: "メールアドレスは必須です",
+    errmess4: "有効なメールアドレスを入力してください",
+    errmess5: "認識されたドメインの有効なメールアドレスを入力してください",
+    errmess6: "電話番号は必須です",
+    errmess7: "有効な${selectedCountry?.country}の電話番号を入力してください（${expectedLength}桁）",
+    errmess8: "ポジションを選択してください",
+    errmess9: "履歴書のリンクは必須です",
+    errmess10: "有効なURLを入力してください",
+    errmess11: "利用規約に同意する必要があります",
+    toasterr1: "フォームのエラーを修正してください",
+    toasterr2: "応募が正常に送信されました！ 🎉",
+    toasterr3: "ネットワークエラー：サーバーに接続できません",
+    toasterr4: "予期しないエラーが発生しました",
+    applyhead: "今すぐ応募",
+    applyname: "フルネーム *",
+    applyemail: "メールアドレス *",
+    applyphone: "電話番号 *",
+    applyposition: "応募職種 *",
+    applyresume: "履歴書のリンク *",
+    applyterms: "利用規約に同意します *",
+    applyquery: "追加の問い合わせ",
+    applysubmit: "🚀 応募を送信" ,
+    applysubmitting: "⏳ 送信中..."
+
+
+
+    
+  },
+  cn: {
+    apply: "返回首页",
+    logoText: "技术迪亚",
+    herotext1: "你的“让我们来做吧”将改变世界",
+    herotext2: "申请表",
+    herotext3: "加入我们，用非常规的想法和团队的力量来惊艳世界。",
+    recruithead: "招聘流程",
+    retitle1: "申请/报名",
+    retitle2: "公司介绍会",
+    retitle3: "文件筛选",
+    retitle4: "网络测试",
+    retitle5: "第一次面试",
+    retitle6: "最终面试",
+    retitle7: "工作邀请",
+    retext1: "通过我们的在线表格提交申请",
+    retext2: "在线或面对面的会议，介绍公司、总裁演讲和问答",
+    retext3: "通过电子邮件或LINE发送简历或OPEN ES",
+    retext4: "在线评估您的技能和知识",
+    retext5: "与人力资源团队成员的一对一面试（远程候选人可在线进行）",
+    retext6: "与总裁的个人面试（需要访问办公室）",
+    retext7: "欢迎加入TECDIA大家庭！",
+    availtitle1: "技术职位",
+    availtitle2: "销售职位",
+    availtitle3: "行政职位",
+    availitems1: [
+      "研究与开发 (R&D)",
+      "制造/质量控制",
+      "质量保证",
+      "IT开发",
+    ],
+    availitems2: ["国内销售", "国际销售", "全球销售"],
+    availitems3: [
+      "贸易操作 / 进出口",
+      "生产管理",
+      "总务 / 行政",
+    ],
+    availhead: "可用职位",
+    errmess1: "全名是必需的",
+    errmess2: "姓名必须至少2个字符",
+    errmess3: "电子邮件是必需的",
+    errmess4: "请输入有效的电子邮件地址",
+    errmess5: "请输入具有认可域名的有效电子邮件地址",
+    errmess6: "电话号码是必需的",
+    errmess7: "请输入有效的${selectedCountry?.country}电话号码（${expectedLength}位）",
+    errmess8: "请选择一个职位",
+    errmess9: "简历链接是必需的",
+    errmess10: "请输入有效的URL",
+    errmess11: "您必须同意条款和条件",
+    toasterr1: "请修正表单中的错误",
+    toasterr2: "申请已成功提交！ 🎉",
+    toasterr3: "网络错误：无法连接到服务器",
+    toasterr4: "发生了意外错误",
+    applyhead: "立即申请",
+    applyname: "全名 *",
+    applyemail: "电子邮件地址 *",
+    applyphone: "电话号码 *",
+    applyposition: "申请职位 *",
+    applyresume: "简历链接 *",
+    applyterms: "我同意条款和条件 *",
+    applyquery: "附加查询",
+    applysubmit: "🚀 提交申请",
+    applysubmitting: "⏳ 提交中..."
+
+  },
+};
+
 
 // Hero Section with Japanese aesthetics
-function Hero() {
+function Hero({language}) {
+
+  const t = translations[language] || translations.en;
+
   return (
     <section
       style={{
@@ -70,7 +220,7 @@ function Hero() {
         alignItems: "center",
         position: "relative",
         overflow: "hidden",
-        marginTop: "90px",
+        padding: "0 1rem",
       }}
     >
       {/* Subtle background pattern */}
@@ -90,16 +240,17 @@ function Hero() {
         style={{
           maxWidth: "1400px",
           margin: "0 auto",
-          padding: "0 2rem",
+          padding: "2rem 1rem",
           position: "relative",
           zIndex: 2,
+          width: "100%",
         }}
       >
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "1fr",
-            gap: "3rem",
+            gap: "2rem",
             alignItems: "center",
             textAlign: "center",
           }}
@@ -107,20 +258,20 @@ function Hero() {
           <div>
             <div
               style={{
-                fontSize: "1.3rem",
-                color: "#fbbf24",
+                fontSize: "clamp(1rem, 3vw, 1.3rem)",
+                color: "#ffffff",
                 fontFamily: "Noto Sans JP, sans-serif",
                 fontWeight: 500,
                 marginBottom: "1rem",
                 letterSpacing: "0.1em",
               }}
             >
-              Your "Let's do this" will change the world
+              {t.herotext1}
             </div>
 
             <h1
               style={{
-                fontSize: "5rem",
+                fontSize: "clamp(2.5rem, 8vw, 5rem)",
                 fontWeight: 900,
                 color: "white",
                 lineHeight: 1.1,
@@ -133,30 +284,30 @@ function Hero() {
               <div
                 style={{
                   background:
-                    "linear-gradient(45deg, #ffffff, #fbbf24, #ffffff)",
+                    "linear-gradient(45deg, #ffffff, #ffffff, #ffffff)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   animation: "shimmer 3s ease-in-out infinite",
                 }}
               >
-                APPLICATION FORM
+                {t.herotext2}
               </div>
             </h1>
 
             <p
               style={{
-                fontSize: "1.4rem",
-                color: "#fbbf24",
+                fontSize: "clamp(1rem, 3vw, 1.4rem)",
+                color: "#ffffff",
                 lineHeight: 1.7,
                 maxWidth: "700px",
                 margin: "0 auto 3rem",
                 fontStyle: "italic",
                 display: "block",
                 marginTop: "1rem",
+                padding: "0 1rem",
               }}
             >
-              Join our journey to surprise the world with unconventional ideas
-              and team power.
+              {t.herotext3}
             </p>
           </div>
         </div>
@@ -193,53 +344,54 @@ function Hero() {
 }
 
 // Recruitment Process Section
-
-function RecruitmentProcess() {
+function RecruitmentProcess({language}) {
   const cardsRef = useRef([]);
+
+  const t = translations[language] || translations.en;
 
   const steps = [
     {
       number: 1,
-      title: "Entry/Application",
-      description: "Submit your application through our online form",
+      title: t.retitle1,
+      description: t.retext1,
       color: "#2563eb",
     },
     {
       number: 2,
-      title: "Company Information Session",
+      title: t.retitle2,
       description:
-        "Online or in-person session with company introduction, president talk, and Q&A",
+        t.retext2,
       color: "#16a34a",
     },
     {
       number: 3,
-      title: "Document Screening",
-      description: "Send resume or OPEN ES via email or LINE",
+      title: t.retitle3,
+      description: t.retext3,
       color: "#ea580c",
     },
     {
       number: 4,
-      title: "Web Test",
-      description: "Online assessment of your skills and knowledge",
+      title: t.retitle4,
+      description: t.retext4,
       color: "#7c3aed",
     },
     {
       number: 5,
-      title: "First Interview",
+      title: t.retitle5,
       description:
-        "One-on-one with HR team member (online available for distant candidates)",
+        t.retext5,
       color: "#2563eb",
     },
     {
       number: 6,
-      title: "Final Interview",
-      description: "Personal interview with president (office visit required)",
+      title: t.retitle6,
+      description: t.retext6,
       color: "#dc2626",
     },
     {
       number: 7,
-      title: "Job Offer",
-      description: "Welcome to the TECDIA family!",
+      title: t.retitle7,
+      description: t.retext7,
       color: "#facc15",
     },
   ];
@@ -269,7 +421,7 @@ function RecruitmentProcess() {
       style={{
         background: "#1e40af",
         minHeight: "100vh",
-        padding: "6rem 2rem",
+        padding: "3rem 1rem",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -294,7 +446,7 @@ function RecruitmentProcess() {
         style={{
           background: "#ffffff",
           borderRadius: "1rem",
-          padding: "2rem",
+          padding: "1.5rem",
           maxWidth: "1000px",
           boxShadow: "0 20px 60px rgba(0,0,0,0.2)",
           width: "100%",
@@ -305,26 +457,26 @@ function RecruitmentProcess() {
         <div
           style={{
             background: "#ea580c",
-            padding: "1.5rem",
+            padding: "1rem",
             borderTopLeftRadius: "1rem",
             borderTopRightRadius: "1rem",
-            margin: "-2rem -2rem 2rem -2rem",
+            margin: "-1.5rem -1.5rem 1.5rem -1.5rem",
             color: "white",
             textAlign: "center",
-            fontSize: "2rem",
+            fontSize: "clamp(1.5rem, 4vw, 2rem)",
             fontWeight: "bold",
             fontFamily: "Orbitron, sans-serif",
             letterSpacing: "1px",
           }}
         >
-          Recruitment Process
+          {t.recruithead}
         </div>
 
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "2rem",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: "1.5rem",
           }}
         >
           {steps.map((step, idx) => (
@@ -364,10 +516,10 @@ function RecruitmentProcess() {
               >
                 {step.number}
               </div>
-              <div>
+              <div style={{ flex: 1 }}>
                 <h3
                   style={{
-                    fontSize: "1.2rem",
+                    fontSize: "clamp(1rem, 2.5vw, 1.2rem)",
                     fontWeight: 700,
                     color: step.color,
                     marginBottom: "0.5rem",
@@ -377,7 +529,7 @@ function RecruitmentProcess() {
                 </h3>
                 <p
                   style={{
-                    fontSize: "1rem",
+                    fontSize: "clamp(0.9rem, 2vw, 1rem)",
                     color: "#374151",
                     lineHeight: 1.6,
                   }}
@@ -406,30 +558,32 @@ function RecruitmentProcess() {
           transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .step-card:hover {
-          transform: perspective(600px) rotateX(3deg) rotateY(3deg) scale(1.03);
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-          z-index: 1;
-          background-color: #ffffff;
-        }
+        @media (hover: hover) {
+          .step-card:hover {
+            transform: perspective(600px) rotateX(3deg) rotateY(3deg) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            z-index: 1;
+            background-color: #ffffff;
+          }
 
-        .step-card::before {
-          content: "";
-          position: absolute;
-          top: -50%;
-          left: -50%;
-          width: 200%;
-          height: 200%;
-          background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
-          transform: rotate(25deg);
-          pointer-events: none;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
+          .step-card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(25deg);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+          }
 
-        .step-card:hover::before {
-          opacity: 1;
-          animation: shimmerMove 1.5s linear infinite;
+          .step-card:hover::before {
+            opacity: 1;
+            animation: shimmerMove 1.5s linear infinite;
+          }
         }
 
         @keyframes shimmerMove {
@@ -442,45 +596,39 @@ function RecruitmentProcess() {
 }
 
 // Available Positions Section
-function AvailablePositions() {
+function AvailablePositions({language}) {
+
+  const t = translations[language] || translations.en;
+
   const positions = [
     {
-      title: "Technical Position",
+      title: t.availtitle1,
       icon: "🔧",
       color: "#3b82f6",
       bg: "#eff6ff",
-      items: [
-        "Research & Development (R&D)",
-        "Manufacturing/Quality Control",
-        "Quality Assurance",
-        "IT Development",
-      ],
+      items: t.availitems1,
     },
     {
-      title: "Sales Position",
+      title: t.availtitle2,
       icon: "📈",
       color: "#22c55e",
       bg: "#ecfdf5",
-      items: ["Domestic Sales", "International Sales", "Global Sales"],
+      items: t.availitems2,
     },
     {
-      title: "Administrative Position",
+      title: t.availtitle3,
       icon: "📋",
       color: "#f97316",
       bg: "#fff7ed",
-      items: [
-        "Trade Operations / Import & Export",
-        "Production Management",
-        "General Affairs / Administration",
-      ],
+      items: t.availitems3,
     },
   ];
 
   return (
     <section
       style={{
-        background: "#ffff7ed",
-        padding: "6rem 2rem",
+        background: "#f9fafb",
+        padding: "3rem 1rem",
         display: "flex",
         justifyContent: "center",
       }}
@@ -489,7 +637,7 @@ function AvailablePositions() {
         style={{
           background: "#ffffff",
           borderRadius: "1rem",
-          padding: "3rem",
+          padding: "2rem 1.5rem",
           maxWidth: "1200px",
           width: "100%",
           boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
@@ -500,18 +648,18 @@ function AvailablePositions() {
           style={{
             background: "#16a34a",
             color: "white",
-            padding: "1.5rem",
+            padding: "1rem",
             borderTopLeftRadius: "1rem",
             borderTopRightRadius: "1rem",
             textAlign: "center",
-            fontSize: "2rem",
+            fontSize: "clamp(1.5rem, 4vw, 2rem)",
             fontWeight: "bold",
             fontFamily: "Orbitron, sans-serif",
-            margin: "-3rem -3rem 3rem -3rem",
+            margin: "-2rem -1.5rem 2rem -1.5rem",
             letterSpacing: "1px",
           }}
         >
-          Available Positions
+          {t.availhead}
         </div>
 
         {/* Cards */}
@@ -519,7 +667,7 @@ function AvailablePositions() {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "2rem",
+            gap: "1.5rem",
           }}
         >
           {positions.map((pos, index) => (
@@ -533,8 +681,10 @@ function AvailablePositions() {
                 boxShadow: "0 5px 15px rgba(0,0,0,0.05)",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-8px)";
-                e.currentTarget.style.boxShadow = "0 15px 30px rgba(0,0,0,0.1)";
+                if (window.innerWidth > 768) {
+                  e.currentTarget.style.transform = "translateY(-8px)";
+                  e.currentTarget.style.boxShadow = "0 15px 30px rgba(0,0,0,0.1)";
+                }
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "translateY(0)";
@@ -547,12 +697,13 @@ function AvailablePositions() {
                   alignItems: "center",
                   gap: "1rem",
                   marginBottom: "1rem",
+                  flexWrap: "wrap",
                 }}
               >
                 <span style={{ fontSize: "2rem" }}>{pos.icon}</span>
                 <h3
                   style={{
-                    fontSize: "1.5rem",
+                    fontSize: "clamp(1.2rem, 3vw, 1.3rem)",
                     fontWeight: "bold",
                     color: pos.color,
                     fontFamily: "Orbitron, sans-serif",
@@ -570,7 +721,14 @@ function AvailablePositions() {
                 }}
               >
                 {pos.items.map((item, idx) => (
-                  <li key={idx} style={{ listStyle: "disc" }}>
+                  <li 
+                    key={idx} 
+                    style={{ 
+                      listStyle: "disc",
+                      fontSize: "clamp(0.9rem, 2vw, 1rem)",
+                      marginBottom: "0.5rem"
+                    }}
+                  >
                     {item}
                   </li>
                 ))}
@@ -584,8 +742,7 @@ function AvailablePositions() {
 }
 
 // Application Form Section
-
-const Toast = ({ message, type, onClose }) => {
+const Toast = ({ message, type, onClose, language }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose();
@@ -594,6 +751,10 @@ const Toast = ({ message, type, onClose }) => {
   }, [onClose]);
 
   const bgColor = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#f59e0b';
+
+  // const result = translate(message, { to: language });
+
+
   
   return (
     <div
@@ -601,6 +762,7 @@ const Toast = ({ message, type, onClose }) => {
         position: 'fixed',
         top: '20px',
         right: '20px',
+        left: '20px',
         background: bgColor,
         color: 'white',
         padding: '1rem 1.5rem',
@@ -608,7 +770,9 @@ const Toast = ({ message, type, onClose }) => {
         boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
         zIndex: 1000,
         maxWidth: '400px',
-        animation: 'slideIn 0.3s ease-out'
+        marginLeft: 'auto',
+        animation: 'slideIn 0.3s ease-out',
+        fontSize: 'clamp(0.9rem, 2vw, 1rem)',
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -624,7 +788,7 @@ const Toast = ({ message, type, onClose }) => {
             marginLeft: '1rem'
           }}
         >
-          x
+          ×
         </button>
       </div>
     </div>
@@ -645,7 +809,7 @@ const countryCodes = [
   { code: '+55', country: 'BR', flag: '🇧🇷', pattern: /^[1-9]\d{10}$/, length: 11 }
 ];
 
-function ApplicationForm() {
+function ApplicationForm({language}) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -661,8 +825,9 @@ function ApplicationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [toast, setToast] = useState(null);
   const [emailValidating, setEmailValidating] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [phoneValidating, setPhoneValidating] = useState(false);
-
+  const t = translations[language] || translations.en;
   // Validation functions
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -721,52 +886,52 @@ function ApplicationForm() {
 
     // Name validation
     if (!formData.name.trim()) {
-      newErrors.name = "Full name is required";
+      newErrors.name = t.errmess1;
     } else if (formData.name.trim().length < 2) {
-      newErrors.name = "Name must be at least 2 characters long";
+      newErrors.name = t.errmess2;
     }
 
     // Email validation
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = t.errmess3;
     } else if (!validateEmail(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = t.errmess4;
     } else {
       setEmailValidating(true);
       const emailExists = await checkEmailExists(formData.email);
       setEmailValidating(false);
       
       if (!emailExists) {
-        newErrors.email = "Please enter a valid email address with a recognized domain";
+        newErrors.email = t.errmess5;
       }
     }
 
     // Phone validation
     if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required";
+      newErrors.phone =  t.errmess6;
     } else if (!validatePhone(formData.phone, formData.countryCode)) {
       const selectedCountry = countryCodes.find(c => c.code === formData.countryCode);
       const expectedLength = Array.isArray(selectedCountry?.length) 
         ? selectedCountry.length.join(' or ') 
         : selectedCountry?.length;
-      newErrors.phone = `Please enter a valid ${selectedCountry?.country} phone number (${expectedLength} digits)`;
+      newErrors.phone = t.errmess7.replace('${selectedCountry?.country}', selectedCountry?.country).replace('${expectedLength}', expectedLength);
     }
 
     // Position validation
     if (!formData.position) {
-      newErrors.position = "Please select a position";
+      newErrors.position = t.errmess8;
     }
 
     // Resume link validation
     if (!formData.resumeLink.trim()) {
-      newErrors.resumeLink = "Resume link is required";
+      newErrors.resumeLink =  t.errmess9;
     } else if (!validateUrl(formData.resumeLink)) {
-      newErrors.resumeLink = "Please enter a valid URL";
+      newErrors.resumeLink = t.errmess10;
     }
 
     // Terms validation
     if (!formData.agreeTerms) {
-      newErrors.agreeTerms = "You must agree to the terms and conditions";
+      newErrors.agreeTerms = t.errmess11;
     }
 
     setErrors(newErrors);
@@ -795,7 +960,7 @@ function ApplicationForm() {
     
     const isValid = await validateForm();
     if (!isValid) {
-      showToast("Please fix the errors in the form", "error");
+      showToast(t.toasterr1, "error");
       return;
     }
 
@@ -825,11 +990,12 @@ function ApplicationForm() {
       if (!response.ok) {
         // Display the actual error message from the API
         const errorMessage = result.message || result.error || `Server error: ${response.status}`;
+        
         showToast(errorMessage, "error");
         return;
       }
 
-      showToast("Application submitted successfully! 🎉", "success");
+      showToast(t.toasterr2, "success");
       
       // Reset form on success
       setFormData({
@@ -847,9 +1013,9 @@ function ApplicationForm() {
       console.error('Error submitting application:', error);
       
       if (error.name === 'TypeError' && error.message.includes('fetch')) {
-        showToast("Network error: Unable to connect to server", "error");
+        showToast(t.toasterr3, "error");
       } else {
-        showToast("An unexpected error occurred", "error");
+        showToast(t.toasterr4, "error");
       }
     } finally {
       setIsSubmitting(false);
@@ -857,10 +1023,10 @@ function ApplicationForm() {
   };
 
   const inputStyle = (hasError) => ({
-    padding: "1.2rem",
+    padding: "1rem",
     border: `2px solid ${hasError ? '#ef4444' : '#e5e7eb'}`,
     borderRadius: "12px",
-    fontSize: "1rem",
+    fontSize: "clamp(0.9rem, 2vw, 1rem)",
     width: "100%",
     boxSizing: "border-box",
     outline: "none",
@@ -872,12 +1038,12 @@ function ApplicationForm() {
     marginBottom: "0.5rem",
     color: "#1f2937",
     display: "block",
-    fontSize: "1.05rem",
+    fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
   };
 
   const errorStyle = {
     color: "#ef4444",
-    fontSize: "0.875rem",
+    fontSize: "clamp(0.8rem, 1.8vw, 0.875rem)",
     marginTop: "0.25rem",
     display: "block"
   };
@@ -889,32 +1055,33 @@ function ApplicationForm() {
           message={toast.message}
           type={toast.type}
           onClose={() => setToast(null)}
+          language={language}
         />
       )}
       
       <section
         style={{
-          padding: "6rem 0",
+          padding: "3rem 1rem",
           background: "#FF8C00",
           minHeight: "100vh"
         }}
       >
         <div
-          style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 1.5rem" }}
+          style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 1rem" }}
         >
           <div
             style={{
               color: "white",
-              padding: "1.5rem",
+              padding: "1rem",
               textAlign: "center",
-              fontSize: "2rem",
+              fontSize: "clamp(1.5rem, 4vw, 2rem)",
               fontWeight: "bold",
               fontFamily: "Orbitron, sans-serif",
-              margin: "-3rem -3rem 3rem -3rem",
+              margin: "0 0 2rem 0",
               letterSpacing: "1px",
             }}
           >
-            Apply Now
+           {t.applyhead}
           </div>
 
           <form
@@ -922,7 +1089,7 @@ function ApplicationForm() {
             style={{
               background: "#fff",
               borderRadius: "20px",
-              padding: "3rem",
+              padding: "clamp(1.5rem, 4vw, 3rem)",
               boxShadow: "0 15px 50px rgba(0, 0, 0, 0.1)",
               border: "2px solid #facc15",
             }}
@@ -930,13 +1097,13 @@ function ApplicationForm() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                gap: "2rem",
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                gap: "1.5rem",
                 marginBottom: "2rem",
               }}
             >
               <div>
-                <label style={labelStyle}>Full Name *</label>
+                <label style={labelStyle}>{t.applyname}</label>
                 <input
                   type="text"
                   name="name"
@@ -949,7 +1116,7 @@ function ApplicationForm() {
               </div>
 
               <div>
-                <label style={labelStyle}>Email *</label>
+                <label style={labelStyle}>{t.applyemail}</label>
                 <div style={{ position: 'relative' }}>
                   <input
                     type="email"
@@ -975,15 +1142,17 @@ function ApplicationForm() {
               </div>
 
               <div>
-                <label style={labelStyle}>Phone Number *</label>
-                <div style={{ display: "flex", gap: "0.5rem", position: 'relative' }}>
+                <label style={labelStyle}>{t.applyphone}</label>
+                <div style={{ display: "flex", gap: "0.5rem", position: 'relative', flexWrap: "wrap" }}>
                   <select
                     name="countryCode"
                     value={formData.countryCode}
                     onChange={handleInputChange}
                     style={{
                       ...inputStyle(false),
-                      width: "140px",
+                      width: "100%",
+                      minWidth: "120px",
+                      maxWidth: "140px",
                       flexShrink: 0
                     }}
                   >
@@ -998,7 +1167,11 @@ function ApplicationForm() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    style={inputStyle(errors.phone)}
+                    style={{
+                      ...inputStyle(errors.phone),
+                      flex: 1,
+                      minWidth: "150px"
+                    }}
                     placeholder={
                       formData.countryCode === '+91' ? '9876543210' :
                       formData.countryCode === '+1' ? '2345678901' :
@@ -1019,7 +1192,7 @@ function ApplicationForm() {
                   )}
                 </div>
                 {errors.phone && <span style={errorStyle}>{errors.phone}</span>}
-                <div style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '0.25rem' }}>
+                <div style={{ fontSize: 'clamp(0.75rem, 1.8vw, 0.8rem)', color: '#6b7280', marginTop: '0.25rem' }}>
                   {(() => {
                     const country = countryCodes.find(c => c.code === formData.countryCode);
                     const length = Array.isArray(country?.length) ? country.length.join(' or ') : country?.length;
@@ -1029,7 +1202,7 @@ function ApplicationForm() {
               </div>
 
               <div>
-                <label style={labelStyle}>Position Applying For *</label>
+                <label style={labelStyle}>{t.applyposition}</label>
                 <select
                   name="position"
                   value={formData.position}
@@ -1049,7 +1222,7 @@ function ApplicationForm() {
             </div>
 
             <div style={{ marginBottom: "2rem" }}>
-              <label style={labelStyle}>Resume Link *</label>
+              <label style={labelStyle}>{t.applyresume}</label>
               <div
                 style={{
                   border: `2px solid ${errors.resumeLink ? '#ef4444' : '#f59e0b'}`,
@@ -1070,14 +1243,15 @@ function ApplicationForm() {
                     padding: "0.75rem",
                     border: "none",
                     borderRadius: "10px",
-                    fontSize: "1rem",
+                    fontSize: "clamp(0.9rem, 2vw, 1rem)",
                     background: "#ffffff",
                     outline: "none",
-                    boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
+                    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                    boxSizing: "border-box"
                   }}
                 />
                 <div style={{ 
-                  fontSize: "0.9rem", 
+                  fontSize: "clamp(0.8rem, 2vw, 0.9rem)", 
                   color: "#6b7280", 
                   marginTop: "0.5rem",
                   textAlign: "center" 
@@ -1089,13 +1263,18 @@ function ApplicationForm() {
             </div>
 
             <div style={{ marginBottom: "2rem" }}>
-              <label style={labelStyle}>Additional Query</label>
+              <label style={labelStyle}>{t.applyquery}</label>
               <textarea
                 name="additionalQuery"
                 value={formData.additionalQuery}
                 onChange={handleInputChange}
                 placeholder="Any questions or additional information you'd like to share..."
-                style={{ ...inputStyle(false), minHeight: "120px", resize: "vertical" }}
+                style={{ 
+                  ...inputStyle(false), 
+                  minHeight: "120px", 
+                  resize: "vertical",
+                  fontFamily: "inherit"
+                }}
               />
             </div>
 
@@ -1116,11 +1295,12 @@ function ApplicationForm() {
                   style={{ 
                     width: "20px", 
                     height: "20px",
-                    marginTop: "2px"
+                    marginTop: "2px",
+                    flexShrink: 0
                   }}
                 />
-                <span style={{ fontSize: "1rem", lineHeight: "1.5" }}>
-                  I agree to the Terms and Conditions and Privacy Policy *
+                <span style={{ fontSize: "clamp(0.9rem, 2vw, 1rem)", lineHeight: "1.5" }}>
+                  {t.applyterms}
                 </span>
               </label>
               {errors.agreeTerms && <span style={errorStyle}>{errors.agreeTerms}</span>}
@@ -1136,17 +1316,19 @@ function ApplicationForm() {
                     : "linear-gradient(to right, #f59e0b, #f97316)",
                   color: "white",
                   border: "none",
-                  padding: "1rem 3rem",
+                  padding: "1rem 2rem",
                   borderRadius: "40px",
-                  fontSize: "1.2rem",
+                  fontSize: "clamp(1rem, 2.5vw, 1.2rem)",
                   fontWeight: "bold",
                   cursor: isSubmitting ? "not-allowed" : "pointer",
                   boxShadow: "0 10px 25px rgba(0, 0, 0, 0.15)",
                   transition: "all 0.3s ease",
-                  opacity: isSubmitting ? 0.7 : 1
+                  opacity: isSubmitting ? 0.7 : 1,
+                  width: "100%",
+                  maxWidth: "300px"
                 }}
               >
-                {isSubmitting ? "⏳ Submitting..." : "🚀 Submit Application"}
+                {isSubmitting ? t.applysubmitting : t.applysubmit}
               </button>
             </div>
           </form>
@@ -1163,6 +1345,12 @@ function ApplicationForm() {
             to {
               transform: translateX(0);
               opacity: 1;
+            }
+          }
+
+          @media (max-width: 768px) {
+            input, select, textarea {
+              font-size: 16px !important; /* Prevents zoom on iOS */
             }
           }
         `}
@@ -1209,8 +1397,8 @@ function ScrollingBanner() {
                 style={{
                   color: "white",
                   fontWeight: 900,
-                  fontSize: "2rem",
-                  margin: "0 4rem",
+                  fontSize: "clamp(1.5rem, 4vw, 2rem)",
+                  margin: "0 clamp(2rem, 6vw, 4rem)",
                   textShadow: "0 0 20px rgba(0, 0, 0, 0.5)",
                   fontFamily: text.match(
                     /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/
@@ -1231,522 +1419,47 @@ function ScrollingBanner() {
   );
 }
 
-// Footer with Japanese elements
-function Footer() {
-  return (
-    <footer
-      style={{
-        background: "linear-gradient(135deg, #1f2937 0%, #111827 100%)",
-        color: "white",
-        padding: "4rem 0 2rem",
-        position: "relative",
-      }}
-    >
-      <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 2rem" }}>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: "3rem",
-            marginBottom: "3rem",
-          }}
-        >
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
-          >
-            <h3
-              style={{
-                fontSize: "3rem",
-                fontWeight: 900,
-                color: "#2563eb",
-                letterSpacing: "0.2em",
-                fontFamily: "Orbitron, monospace",
-                textShadow: "0 0 20px rgba(37, 99, 235, 0.5)",
-              }}
-            >
-              TECDIA
-            </h3>
-            <p
-              style={{
-                color: "rgba(255, 255, 255, 0.8)",
-                lineHeight: 1.8,
-                fontSize: "1.1rem",
-              }}
-            >
-              Changing the world with unconventional ideas and team power.
-            </p>
-          </div>
 
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
-          >
-            <h4
-              style={{
-                fontSize: "1.5rem",
-                fontWeight: 700,
-                color: "#16a34a",
-                marginBottom: "1rem",
-                fontFamily: "Zen Kaku Gothic New, sans-serif",
-              }}
-            >
-              Contact
-            </h4>
-            <p
-              style={{
-                color: "rgba(255, 255, 255, 0.8)",
-                lineHeight: 2,
-                fontSize: "1.1rem",
-              }}
-            >
-              📧 Email: careers@tecdia.com
-              <br />
-              📞 Phone: +91 XXXXX XXXXX
-              <br />
-              📍 Address: Mumbai, India
-            </p>
-          </div>
 
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
-          >
-            <h4
-              style={{
-                fontSize: "1.5rem",
-                fontWeight: 700,
-                color: "#ea580c",
-                marginBottom: "1rem",
-                fontFamily: "Zen Kaku Gothic New, sans-serif",
-              }}
-            >
-              Follow Us
-            </h4>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
-              {["LinkedIn", "Twitter", "Facebook", "Instagram"].map(
-                (social) => (
-                  <a
-                    key={social}
-                    href="#"
-                    style={{
-                      color: "rgba(255, 255, 255, 0.8)",
-                      textDecoration: "none",
-                      padding: "1rem 1.5rem",
-                      border: "2px solid rgba(255, 255, 255, 0.3)",
-                      borderRadius: "30px",
-                      display: "inline-block",
-                      transition: "all 0.3s ease",
-                      fontWeight: 600,
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.borderColor = "#2563eb";
-                      e.target.style.background = "#2563eb";
-                      e.target.style.color = "white";
-                      e.target.style.transform = "translateY(-3px)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.borderColor = "rgba(255, 255, 255, 0.3)";
-                      e.target.style.background = "transparent";
-                      e.target.style.color = "rgba(255, 255, 255, 0.8)";
-                      e.target.style.transform = "translateY(0)";
-                    }}
-                  >
-                    {social}
-                  </a>
-                )
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div
-          style={{
-            borderTop: "2px solid rgba(255, 255, 255, 0.2)",
-            paddingTop: "2rem",
-            textAlign: "center",
-            color: "rgba(255, 255, 255, 0.6)",
-            fontSize: "1rem",
-          }}
-        >
-          <p>&copy; 2024 TECDIA. All rights reserved.</p>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
-// Main App Component
+// Main App Component  
 function Form() {
-  const [isLoaded, setIsLoaded] = useState(false);
+
+  const [language, setLanguage] = useState("en");
 
   useEffect(() => {
-    setIsLoaded(true);
-  }, []);
+      const browserLang = navigator.language || navigator.userLanguage;
+      if (browserLang.startsWith("ja")) {
+        setLanguage("jp");
+      } else if (browserLang.startsWith("zh")) {
+        setLanguage("cn");
+      } else {
+        setLanguage("en");
+      }
+    }, []);
 
-  if (!isLoaded) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          background: "linear-gradient(135deg, #2563eb 0%, #1e40af 100%)",
-          color: "white",
-          fontSize: "2rem",
-          fontWeight: "bold",
-          fontFamily: "Orbitron, monospace",
-        }}
-      >
-        <div style={{ fontSize: "4rem", marginBottom: "2rem" }}>⚡</div>
-        <div>Loading TECDIA...</div>
-        <div
-          style={{
-            fontFamily: "Noto Sans JP, sans-serif",
-            fontSize: "1.5rem",
-            color: "#fbbf24",
-            marginTop: "1rem",
-          }}
-        >
-          読み込み中...
-        </div>
-      </div>
-    );
-  }
+    const t = translations[language]
 
   return (
-    <div style={{ minHeight: "100vh" , overflow: "hidden" }}>
-      <Header />
-      <Hero />
-      <RecruitmentProcess />
-      <AvailablePositions />
-      <ApplicationForm />
-      <ScrollingBanner/>
+    
+    <div style={{ minHeight: "100vh", overflow: "hidden" }}>
+      <img src="./logo-tecdia.png" alt="Logo" className="logo" style={{left: '5px'}}/>
+        <a
+        href="/"
+        rel="noopener noreferrer"
+      ><button className="apply-btn" style={{position: 'fixed', top: '20px', right: '10px'}}>
+        {t.apply} 
+      </button></a>
+      <div className="language-toggle-container">
+        <LanguageToggle onLanguageChange={setLanguage} />
+      </div>
+      <Hero language={language}/>
+      <RecruitmentProcess language={language} />
+      <AvailablePositions language={language} />
+      <ApplicationForm language={language} />
+      <ScrollingBanner language={language}/>
       <Footer />
     </div>
   );
 }
 
 export default Form;
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useState } from 'react';
-// import { User, Cpu, BarChart3, CheckCircle } from 'lucide-react';
-
-// export default function Form() {
-//   const [formData, setFormData] = useState({
-//     firstName: '',
-//     lastName: '',
-//     email: '',
-//     phone: '',
-//     position: '',
-//     experience: '',
-//     coverLetter: '',
-//     resume: null,
-//     agreeToTerms: false
-//   });
-
-//   const [currentStep, setCurrentStep] = useState(1);
-//   const [hoveredCard, setHoveredCard] = useState(null);
-//   const [hoveredStep, setHoveredStep] = useState(null);
-//   const [isButtonHovered, setIsButtonHovered] = useState(false);
-
-//   const handleInputChange = (e) => {
-//     const { name, value, type, checked } = e.target;
-//     setFormData(prev => ({
-//       ...prev,
-//       [name]: type === 'checkbox' ? checked : value
-//     }));
-//   };
-
-//   const handleFileChange = (e) => {
-//     setFormData(prev => ({
-//       ...prev,
-//       resume: e.target.files[0]
-//     }));
-//   };
-
-//   const handleSubmit = () => {
-//     if (!formData.agreeToTerms) {
-//       alert('Please agree to the terms & conditions and privacy policies');
-//       return;
-//     }
-//     if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone || !formData.position) {
-//       alert('Please fill in all required fields');
-//       return;
-//     }
-//     console.log('Form submitted:', formData);
-//     alert('Application submitted successfully!');
-//   };
-
-//   const positions = [
-//     {
-//       title: 'Technical Position',
-//       icon: <Cpu className="w-8 h-8 text-orange-500" />,
-//       roles: ['Research & Development (R&D)', 'Manufacturing/Quality Control', 'Quality Assurance', 'IT Development']
-//     },
-//     {
-//       title: 'Sales Position', 
-//       icon: <BarChart3 className="w-8 h-8 text-orange-500" />,
-//       roles: ['Domestic Sales', 'International Sales', 'Global Sales']
-//     },
-//     {
-//       title: 'Administrative Position',
-//       icon: <User className="w-8 h-8 text-orange-500" />,
-//       roles: ['Trade Operations / Import & Export', 'Production Management', 'General Affairs / Administration']
-//     }
-//   ];
-
-//   const recruitmentSteps = [
-//     { step: 1, title: 'Apply/Application', description: 'Submit your application through our online form or email' },
-//     { step: 2, title: 'Company Information Session', description: 'Learn more about our company culture and values' },
-//     { step: 3, title: 'Document Screening', description: 'Initial review of your qualifications and documents' },
-//     { step: 4, title: 'Web Test', description: 'Complete our online assessment test' },
-//     { step: 5, title: 'First Interview', description: 'Submit your application through our online form or email' },
-//     { step: 6, title: 'Final Interview', description: 'Submit your application through our online form or email' },
-//     { step: 7, title: 'Job Offer', description: 'Submit your application through our online form or email' }
-//   ];
-
-//   return (
-//     <div className="min-h-screen bg-gradient-to-br from-gray-700 via-gray-600 to-gray-900 text-white font-sans">
-//       <div className="max-w-7xl mx-auto px-6 py-16">
-//         <div className="text-center mb-16 text-5xl font-bold leading-tight">
-//           <h1>
-//             <span className="text-orange-500">AVAILABLE</span>
-//             <br />
-//             <span className="text-white">POSITIONS</span>
-//           </h1>
-//         </div>
-
-//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-//           {positions.map((position, index) => (
-//             <div 
-//               key={index} 
-//               className={`bg-white rounded-2xl p-8 text-gray-700 shadow-xl transition-all duration-300 cursor-pointer 
-//                 ${hoveredCard === index ? 'transform -translate-y-2 shadow-orange-500/20' : ''}`}
-//               onMouseEnter={() => setHoveredCard(index)}
-//               onMouseLeave={() => setHoveredCard(null)}
-//             >
-//               <div className="flex flex-col items-center text-center">
-//                 <div className="mb-6">{position.icon}</div>
-//                 <h3 className="text-2xl font-bold mb-6">
-//                   <span className="text-orange-500">{position.title.split(' ')[0]} </span>
-//                   <span className="text-gray-700">{position.title.split(' ')[1]}</span>
-//                 </h3>
-//                 <ul className="list-none p-0 m-0">
-//                   {position.roles.map((role, roleIndex) => (
-//                     <li key={roleIndex} className="flex items-center text-sm mb-3 last:mb-0">
-//                       <div className="w-2 h-2 bg-gray-700 rounded-full mr-3"></div>
-//                       {role}
-//                     </li>
-//                   ))}
-//                 </ul>
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-
-//         <div className="mb-20">
-//           <div className="text-center mb-16 text-5xl font-bold leading-tight">
-//             <h2>
-//               <span className="text-orange-500">RECRUITMENT</span>
-//               <br />
-//               <span className="text-white">PROCESS</span>
-//             </h2>
-//           </div>
-
-//           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-//             {recruitmentSteps.map((step, index) => (
-//               <div 
-//                 key={index} 
-//                 className={`flex items-start gap-6 cursor-pointer transition-all duration-300 rounded-lg p-4 
-//                   ${hoveredStep === index ? 'bg-white/5' : ''}`}
-//                 onClick={() => setCurrentStep(step.step)}
-//                 onMouseEnter={() => setHoveredStep(index)}
-//                 onMouseLeave={() => setHoveredStep(null)}
-//               >
-//                 <div className="flex-shrink-0 flex flex-col items-center">
-//                   <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg transition-all duration-300 
-//                     ${step.step <= currentStep ? 'bg-orange-500' : 'bg-gray-600'}`}>
-//                     {step.step <= currentStep ? (
-//                       <CheckCircle className="w-6 h-6" />
-//                     ) : (
-//                       step.step
-//                     )}
-//                   </div>
-//                   {index < recruitmentSteps.length - 1 && (
-//                     <div className={`w-0.5 h-16 ml-6 mt-2 transition-all duration-300 
-//                       ${step.step < currentStep ? 'bg-orange-500' : 'bg-gray-600'}`}></div>
-//                   )}
-//                 </div>
-//                 <div className="flex-1">
-//                   <div className="text-sm text-orange-500 font-semibold mb-1">STEP {step.step.toString().padStart(2, '0')}</div>
-//                   <h3 className={`text-xl font-bold mb-2 transition-all duration-300 
-//                     ${step.step <= currentStep ? 'text-white' : 'text-gray-400'}`}>{step.title}</h3>
-//                   <p className={`text-sm transition-all duration-300 
-//                     ${step.step <= currentStep ? 'text-gray-300' : 'text-gray-500'}`}>{step.description}</p>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-
-//         <div className="max-w-4xl mx-auto">
-//           <div className="text-center mb-12">
-//             <h2 className="text-5xl font-bold leading-tight">
-//               <span className="text-orange-500">APPLICATION</span>
-//               <br />
-//               <span className="text-white">FORM</span>
-//             </h2>
-//             <p className="text-xl text-gray-300 mb-4 mt-4">Take the first step towards joining our team</p>
-//             <p className="text-lg text-gray-400">Fill out the form below to apply</p>
-//           </div>
-
-//           <div className="bg-white/10 backdrop-blur-md rounded-2xl p-10 shadow-2xl border border-white/20">
-//             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-//               <div>
-//                 <label htmlFor="firstName" className="block text-white font-semibold mb-3">First Name</label>
-//                 <input
-//                   type="text"
-//                   id="firstName"
-//                   name="firstName"
-//                   value={formData.firstName}
-//                   onChange={handleInputChange}
-//                   className="w-full p-3.5 rounded-lg bg-white border-2 border-orange-500 text-gray-700 text-base outline-none transition-all duration-300 focus:ring-2 focus:ring-orange-400"
-//                 />
-//               </div>
-//               <div>
-//                 <label htmlFor="lastName" className="block text-white font-semibold mb-3">Last Name</label>
-//                 <input
-//                   type="text"
-//                   id="lastName"
-//                   name="lastName"
-//                   value={formData.lastName}
-//                   onChange={handleInputChange}
-//                   className="w-full p-3.5 rounded-lg bg-white border-2 border-orange-500 text-gray-700 text-base outline-none transition-all duration-300 focus:ring-2 focus:ring-orange-400"
-//                 />
-//               </div>
-//             </div>
-
-//             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-//               <div>
-//                 <label htmlFor="email" className="block text-white font-semibold mb-3">Email Address</label>
-//                 <input
-//                   type="email"
-//                   id="email"
-//                   name="email"
-//                   value={formData.email}
-//                   onChange={handleInputChange}
-//                   className="w-full p-3.5 rounded-lg bg-white border-2 border-orange-500 text-gray-700 text-base outline-none transition-all duration-300 focus:ring-2 focus:ring-orange-400"
-//                 />
-//               </div>
-//               <div>
-//                 <label htmlFor="phone" className="block text-white font-semibold mb-3">Phone Number</label>
-//                 <input
-//                   type="tel"
-//                   id="phone"
-//                   name="phone"
-//                   value={formData.phone}
-//                   onChange={handleInputChange}
-//                   className="w-full p-3.5 rounded-lg bg-white border-2 border-orange-500 text-gray-700 text-base outline-none transition-all duration-300 focus:ring-2 focus:ring-orange-400"
-//                 />
-//               </div>
-//             </div>
-
-//             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-//               <div>
-//                 <label htmlFor="position" className="block text-white font-semibold mb-3">Position Applied For</label>
-//                 <select
-//                   id="position"
-//                   name="position"
-//                   value={formData.position}
-//                   onChange={handleInputChange}
-//                   className="w-full p-3.5 rounded-lg bg-white border-2 border-orange-500 text-gray-700 text-base outline-none transition-all duration-300 focus:ring-2 focus:ring-orange-400"
-//                 >
-//                   <option value="">Select Position</option>
-//                   <option value="technical">Technical Position</option>
-//                   <option value="sales">Sales Position</option>
-//                   <option value="administrative">Administrative Position</option>
-//                 </select>
-//               </div>
-//               <div>
-//                 <label htmlFor="experience" className="block text-white font-semibold mb-3">Years of Experience</label>
-//                 <input
-//                   type="number"
-//                   id="experience"
-//                   name="experience"
-//                   value={formData.experience}
-//                   onChange={handleInputChange}
-//                   className="w-full p-3.5 rounded-lg bg-white border-2 border-orange-500 text-gray-700 text-base outline-none transition-all duration-300 focus:ring-2 focus:ring-orange-400"
-//                   min="0"
-//                 />
-//               </div>
-//             </div>
-
-//             <div className="mb-8">
-//               <label htmlFor="coverLetter" className="block text-white font-semibold mb-3">Cover Letter</label>
-//               <textarea
-//                 id="coverLetter"
-//                 name="coverLetter"
-//                 value={formData.coverLetter}
-//                 onChange={handleInputChange}
-//                 rows={6}
-//                 className="w-full p-3.5 rounded-lg bg-white border-2 border-orange-500 text-gray-700 text-base outline-none transition-all duration-300 resize-none font-sans focus:ring-2 focus:ring-orange-400"
-//                 placeholder="Tell us about yourself and why you're interested in this position..."
-//               ></textarea>
-//             </div>
-
-//             <div className="mb-8">
-//               <label htmlFor="resume" className="block text-white font-semibold mb-3">Resume/CV</label>
-//               <input
-//                 type="file"
-//                 id="resume"
-//                 name="resume"
-//                 onChange={handleFileChange}
-//                 accept=".pdf,.doc,.docx"
-//                 className="w-full p-3.5 rounded-lg bg-white border-2 border-orange-500 text-gray-700 text-base outline-none transition-all duration-300 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-orange-100 file:text-orange-700 hover:file:bg-orange-200 cursor-pointer focus:ring-2 focus:ring-orange-400"
-//               />
-//             </div>
-
-//             <div className="mb-8">
-//               <label htmlFor="agreeToTerms" className="flex items-center cursor-pointer">
-//                 <input
-//                   type="checkbox"
-//                   id="agreeToTerms"
-//                   name="agreeToTerms"
-//                   checked={formData.agreeToTerms}
-//                   onChange={handleInputChange}
-//                   className="w-5 h-5 accent-orange-500 mr-3"
-//                 />
-//                 <span className="text-white">
-//                   I agree to the <span className="text-orange-500 underline">terms & conditions</span> & <span className="text-orange-500 underline">privacy policies</span>
-//                 </span>
-//               </label>
-//             </div>
-
-//             <div className="text-center">
-//               <button
-//                 onClick={handleSubmit}
-//                 className={`bg-orange-500 text-white font-bold py-4 px-12 rounded-lg text-lg border-none cursor-pointer transition-all duration-300 shadow-lg 
-//                   ${isButtonHovered ? 'bg-orange-600 transform scale-105 shadow-orange-500/30' : ''}`}
-//                 onMouseEnter={() => setIsButtonHovered(true)}
-//                 onMouseLeave={() => setIsButtonHovered(false)}
-//               >
-//                 SUBMIT →
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }

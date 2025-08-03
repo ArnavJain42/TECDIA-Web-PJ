@@ -1,5 +1,10 @@
 @import "tailwindcss";
-
+@font-face {
+    font-family: 'Orbitron';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/orbitron/v25/yMJMMIlzdpvBhQQL_SC3X9yhF25-T1nyxSmxpg.woff2) format('woff2');
+}
 /* Webkit browsers (Chrome, Safari, Edge)
 ::-webkit-scrollbar {
   width: 8px;

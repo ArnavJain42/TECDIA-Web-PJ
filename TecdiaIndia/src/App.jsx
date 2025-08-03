@@ -16,15 +16,16 @@ import TecdiaNumber from "./components/TecdiaNumber.jsx";
 import Footer from "./components/Footer.jsx";
 import OrganizationCulture from "./components/OrganizationCulture.jsx";
 import CherryBlossomTree from "./components/cherryBlossomTree.jsx";
+import WhatIsTecdia from "./components/WhatIsTecdia.jsx";
 import { Search, User, Mail, Phone, MapPin, FileText, MessageCircle, Loader2, X } from 'lucide-react';
-
-const images = [
-  { id: 1, img: "./画像 (1).png" },
-  { id: 2, img: "./画像 (3).png" },
-  { id: 3, img: "./画像 (4).png" },
-  { id: 4, img: "./画像 (5).png" },
-  { id: 5, img: "./画像.jpeg" },
-];
+import Navbar from "./components/Navbar.jsx";
+// const images = [
+//   { id: 1, img: "./画像 (1).png" },
+//   { id: 2, img: "./画像 (3).png" },
+//   { id: 3, img: "./画像 (4).png" },
+//   { id: 4, img: "./画像 (5).png" },
+//   { id: 5, img: "./画像.jpeg" },
+// ];
 
 const translations = {
   en: {
@@ -42,7 +43,7 @@ const translations = {
     profile: "Company Profile",
   },
   jp: {
-    logoText: "テクディア",
+    logoText: "テクダイヤ",
     menuButton: "メニュー",
     close: "閉じる",
     menuLeft: ["ニュース", "スタッフ＆キャスト", "映画", "音楽"],
@@ -333,6 +334,7 @@ export default function App() {
   const [language, setLanguage] = useState("en");
   const [cardSize, setCardSize] = useState(450);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
 
   const initializeGridText = () => {
@@ -374,9 +376,9 @@ export default function App() {
     navigate('/form');
   };
   
-  const handleProductClick = () => {
-    navigate('/product');
-  };
+  // const handleProductClick = () => {
+  //   navigate('/product');
+  // };
 
   const t = translations[language];
 
@@ -419,6 +421,18 @@ export default function App() {
   // Cleanup
   return () => window.removeEventListener('resize', handleResize);
 }, []);
+
+useEffect(() => {
+    const handleScroll = () => {
+      const landingHeight =
+        document.querySelector(".landing-section")?.offsetHeight || 0;
+      const scrollY = window.scrollY;
+      setIsScrolled(scrollY > landingHeight - 60); // Adjust threshold as needed
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // useEffect(() => {
   //   const handleScroll = () => {
@@ -477,18 +491,30 @@ if (loaderPhase === 1) {
       {/* <div className="ballpit-container">
         <Ballpit />
       </div> */}
-      
+      <section>
+        <Navbar
+          t={t}
+          language={language}
+          setLanguage={setLanguage}
+          menuOpen={menuOpen}
+          setMenuOpen={setMenuOpen}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          ApplicationStatusModal={ApplicationStatusModal}
+          isScrolled={isScrolled}
+        />
+      </section>
     
-      {!menuOpen && (
+      {/* {!menuOpen && (
         <div className="menu-btn" onClick={() => setMenuOpen(true)}>
           <div className="menu-lines" />
           <div className="menu-lines" />
           <div className="menu-label" style={{color:"white"}}>{t.menuButton}</div>
         </div>
-      )}
+      )} */}
 
       {/* Fullscreen Menu Overlay */}
-      <div className={`fullscreen-menu ${menuOpen ? "show" : ""}`}>
+      {/* <div className={`fullscreen-menu ${menuOpen ? "show" : ""}`}>
         {menuOpen && (
           <div className="close-btn" onClick={() => setMenuOpen(false)}>
             <div className="close-icon">✕</div>
@@ -518,19 +544,18 @@ if (loaderPhase === 1) {
           </div>
         </div>
       </div>
-      <img src="./logo-tecdia.png" alt="Logo" className="logo" />
+      <img src="./logo-tecdia.png" alt="Logo" className="logo" /> */}
        <img src="./cherry.png" alt="Right Side" className="side-image" />
       {/* Language Toggle */}
-      <div className="language-toggle-container">
+      {/* <div className="language-toggle-container">
         <LanguageToggle onLanguageChange={setLanguage} />
       </div>
       <button className="apply-btn"><a
         href="form"
-        target="_blank"
         rel="noopener noreferrer"
       >
         {t.apply} <span className="arrow">↗</span>
-      </a></button>
+      </a></button> */}
 <ApplicationStatusModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} style={{zindex: 2000}}
@@ -568,9 +593,9 @@ if (loaderPhase === 1) {
       <section className="landing-foot">
         <MarqueeComponent language={language}></MarqueeComponent>
       </section>
-      <section class="tecdia-section">
+      {/* <section class="tecdia-section"> */}
         {/* <CherryBlossomTree /> */}
-        <div className="whatpic-container">
+        {/* <div className="whatpic-container">
 
         
   
@@ -599,18 +624,20 @@ if (loaderPhase === 1) {
                 <a><button class="btn" onClick={handleApplyClick}>{t.apply} ↗</button></a>
             </div>
         </div>
-    </section>
-
+    </section> */}
+    <section id="about">
+        <WhatIsTecdia language={language} cardSize={cardSize} t={t} />
+      </section>
       
 
-      <section className="tec-section">
+      <section className="tec-section" id="TecNum">
       {/* Squares background */}
       <div className="tec-squares-bg">
         <Squares 
           speed={0.5} 
           squareSize={40}
           direction="diagonal"
-          borderColor="#fff"
+          borderColor="#0f57d4"
         >
           
         </Squares>
@@ -619,9 +646,9 @@ if (loaderPhase === 1) {
       {/* Foreground content */}
       <TecdiaNumber language={language} />
     </section>
-      <OrganizationCulture />
-      <div>
-        <PresidentVision />
+      <section id='Culture'><OrganizationCulture/></section>
+      <div id="vision">
+        <PresidentVision/>
       </div>
       <Footer />
       {/* Background Animation */}

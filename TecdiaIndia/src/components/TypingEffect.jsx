@@ -6,9 +6,15 @@ const TypingEffect = ({ language }) => {
   const [displayedText, setDisplayedText] = useState("");
 
   const translations = {
-    en: `We are a manufacturer that supplies products necessary for the future, from 5G, data centers, and space development to smartphones and 3D printing. With the motto "Work Hard Play Hard!" we are a company that pursues fulfillment not only at work but also in private life.`,
-    jp: `5G、データセンター、宇宙開発からスマートフォン、3Dプリンティングに必要な製品を供給するメーカーです。「Work Hard Play Hard!」をモットーに、仕事だけでなくプライベートでも充実感を追求する会社です。`,
-    cn: `我们是一家制造商, 提供从5G、数据中心、太空开发到智能手机和3D打印所需的产品。我们以“努力工作, 尽情玩乐！”为座右铭，是一家不仅在工作中追求成就感, 而且在私人生活中也追求充实感的公司。`
+    en: `Tecdia is at the forefront of innovation, powering critical industries like 5G, data centers, space exploration, smartphones, and 3D printing. Our cutting-edge technologies drive the future, offering you the chance to work on projects that truly transform the world. Join us to be part of a company where your efforts make a global impact every day.
+
+At Tecdia, our motto “Work Hard, Play Hard!” reflects our vibrant culture that values both professional excellence and personal fulfillment. We provide a dynamic environment with opportunities for growth, collaboration, and work-life balance, ensuring you thrive on and off the job. If you want a career that challenges you and supports your well-being, Tecdia is the place to be.`,
+    jp: `テクダイヤは、5G、データセンター、宇宙開発、スマートフォン、3Dプリンティングといった重要産業を支える最先端のイノベーション企業です。私たちの技術は未来を切り開き、世界を変えるプロジェクトに携わるチャンスをあなたに提供します。日々、グローバルな影響力を持つ仕事に参加しませんか。
+
+テクダイヤのモットー「Work Hard, Play Hard!」は、仕事の成果と個人の充実を大切にする活気ある企業文化を表しています。成長、協力、ワークライフバランスの機会に恵まれた環境で、仕事も私生活も充実できる場所です。挑戦しながらも自分を大切にできるキャリアを望むなら、テクダイヤが最適な選択です。`,
+    cn: `Tecdia 处于创新前沿，致力于支持5G、数据中心、太空探索、智能手机和3D打印等关键行业。我们的尖端技术引领未来，赋予您参与真正改变世界项目的机会。加入我们，成为每日创造全球影响力的一部分。
+
+Tecdia 的座右铭“Work Hard, Play Hard!”体现了我们兼顾专业卓越与个人幸福的活力文化。我们提供充满活力的工作环境，有成长、协作和工作生活平衡的机会，确保您在工作与生活中都能茁壮成长。如果您希望拥有一个既具挑战性又支持身心健康的职业，Tecdia 将是您的理想选择。`,
   };
 
   const fullText = translations[language] || translations.en;
@@ -41,7 +47,9 @@ const TypingEffect = ({ language }) => {
     setDisplayedText("");
     setIsVisible(false);
     const timeout = setTimeout(() => {
-      if (paragraphRef.current?.getBoundingClientRect().top < window.innerHeight) {
+      if (
+        paragraphRef.current?.getBoundingClientRect().top < window.innerHeight
+      ) {
         setIsVisible(true);
       }
     }, 100);

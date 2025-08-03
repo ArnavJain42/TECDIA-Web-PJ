@@ -3,9 +3,10 @@ import { useRef, useEffect } from "react";
 const Squares = ({
   direction = "right",
   speed = 1,
-  borderColor = "#90ee90",     // Light green lines
+  borderColor = "#d290ee", // Light green lines
   squareSize = 40,
   hoverFillColor = "#222",
+  language = "cn",
 }) => {
   const canvasRef = useRef(null);
   const requestRef = useRef(null);
@@ -35,7 +36,15 @@ const Squares = ({
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Fill background with solid green
-      ctx.fillStyle = "#ff00fb"; // Dark green background
+      // Square Color
+      let fillColor = "#ECECBB"; // English default
+      if (language === "jp") {
+        fillColor = "#FF894F";
+      } else if (language === "cn") {
+        fillColor = "#EB5B00";
+      }
+      ctx.fillStyle = fillColor;
+
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       const startX = Math.floor(gridOffset.current.x / squareSize) * squareSize;
@@ -45,16 +54,6 @@ const Squares = ({
         for (let y = startY; y < canvas.height + squareSize; y += squareSize) {
           const squareX = x - (gridOffset.current.x % squareSize);
           const squareY = y - (gridOffset.current.y % squareSize);
-
-          // Highlight hovered square
-          if (
-            hoveredSquareRef.current &&
-            Math.floor((x - startX) / squareSize) === hoveredSquareRef.current.x &&
-            Math.floor((y - startY) / squareSize) === hoveredSquareRef.current.y
-          ) {
-            ctx.fillStyle = hoverFillColor;
-            ctx.fillRect(squareX, squareY, squareSize, squareSize);
-          }
 
           // Draw square borders
           ctx.strokeStyle = borderColor;
@@ -105,10 +104,10 @@ const Squares = ({
       const startY = Math.floor(gridOffset.current.y / squareSize) * squareSize;
 
       const hoveredSquareX = Math.floor(
-        (mouseX + gridOffset.current.x - startX) / squareSize,
+        (mouseX + gridOffset.current.x - startX) / squareSize
       );
       const hoveredSquareY = Math.floor(
-        (mouseY + gridOffset.current.y - startY) / squareSize,
+        (mouseY + gridOffset.current.y - startY) / squareSize
       );
 
       if (
@@ -134,7 +133,7 @@ const Squares = ({
       canvas.removeEventListener("mousemove", handleMouseMove);
       canvas.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [direction, speed, borderColor, hoverFillColor, squareSize]);
+  }, [direction, speed, borderColor, hoverFillColor, squareSize, language]);
 
   return (
     <canvas

@@ -1,8 +1,20 @@
-import { Youtube, ExternalLink } from "lucide-react";
+import { Youtube, ExternalLink, Watch } from "lucide-react";
 
-const ProductSlide = ({ product }) => {
+const translations = {
+  en: {
+    Watch: "Watch Video",
+  },
+  jp: {
+    Watch: "ビデオを見る",
+  },
+  cn: { 
+    Watch: "观看视频",
+  },
+};
+
+const ProductSlide = ({ product, language }) => {
   const { title, description, image, youtubeUrl, color } = product;
-
+  const t = translations[language] 
   return (
     <div className={`slide slide-${color}`}>
       <div className="slide-content">
@@ -18,7 +30,7 @@ const ProductSlide = ({ product }) => {
               className="youtube-link"
             >
               <Youtube className="youtube-icon" size={24} />
-              <span className="youtube-text">Watch Video</span>
+              <span className="youtube-text">{t.Watch}</span>
               <ExternalLink className="external-icon" size={16} />
             </a>
           </div>
