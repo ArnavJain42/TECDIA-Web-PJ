@@ -100,7 +100,7 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
     setApplicationData(null);
 
     try {
-      const response = await fetch('http://localhost:5000/api/applications/check-status', {
+      const response = await fetch('https://tecdia-ind-backend.onrender.com/api/applications/check-status', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -478,7 +478,7 @@ useEffect(() => {
   //   };
   // }, [progress]);
 
-if (loaderPhase === 1) {
+  if (loaderPhase === 1) {
     return <LoaderKatakana text="テクディア" speed={45} characterSet="katakana" subtitle="Tecdia - Recruiting in India" style={{position: "fixed"}}/>;
   }
 

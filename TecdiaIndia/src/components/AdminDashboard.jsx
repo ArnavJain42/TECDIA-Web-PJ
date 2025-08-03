@@ -12,7 +12,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchApps = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/applications/admin/all', {
+        const res = await axios.get('https://tecdia-ind-backend.onrender.com/api/applications/admin/all', {
           headers: { Authorization: `Bearer ${token}` }
         })
         setApps(res.data)
@@ -26,7 +26,7 @@ const AdminDashboard = () => {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      await axios.patch(`http://localhost:5000/api/applications/admin/update/${id}`, {
+      await axios.patch(`https://tecdia-ind-backend.onrender.com/api/applications/admin/update/${id}`, {
         status: newStatus
       }, {
         headers: { Authorization: `Bearer ${token}` }
