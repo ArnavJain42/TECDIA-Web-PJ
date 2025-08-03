@@ -147,14 +147,14 @@ export default function OrganizationCulture({language}) {
         <div className="flex flex-col items-center justify-center">
           <div className="organization-heading">{t.cert}</div>
           {/* Certification */}
-          <div className="flex flex-col items-center justify-center bg-[#fff4d7] w-[1400px] rounded-3xl">
+          <div className="flex flex-col items-center justify-center bg-[#fff4d7] rounded-3xl p-[30px]">
             <div className="organization-certification-title ">
               <span>{t.certtitle}</span>
             </div>
 
-            <div className="organization-certification-box w-full mt-6">
+            <div className="organization-certification-box mt-6">
               {/* Layout switches from vertical to horizontal */}
-              <div className="flex flex-col md:flex-row items-center gap-6">
+              <div className="flex flex-col flex-wrap items-center gap-6">
                 <div className="organization-certification-logo border-solid border-4 flex-shrink-0">
                   {/* Responsive image size */}
                   <img
