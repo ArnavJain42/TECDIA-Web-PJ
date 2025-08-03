@@ -97,7 +97,7 @@ const PresidentVision = ({language}) => {
   }, []);
 
   return (
-    <div className="president-section">
+    <div className="president-section" style={{ backgroundColor: "#7DA8FF" }}>
       {/* Background Effects */}
       <div className="background-effects">
         <div className="pulse pulse-1"></div>

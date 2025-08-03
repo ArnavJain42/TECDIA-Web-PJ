@@ -3,25 +3,25 @@ import { Laptop, Umbrella, Calendar, Clock } from "lucide-react";
 
 
 const translations = {
-  en:{
+  en: {
     orghead: "TECDIA'S",
     orghead2: "ORGANIZATION CULTURE",
     workhead: "Work-life balance",
     worktext: "At TECDIA, we believe life is about more than work it’s about balancing your career with what truly matters. Whether it’s family time, hobbies, or personal downtime, we support it all. With flexible systems and a culture that values your well-being, we give you the freedom to thrive both inside and outside the office. Because a fulfilling life creates a successful career, and at TECDIA, we support the whole you.",
     cardtitle1: "Reclaim Your Evenings",
-    cardtitle2:"126 Days Off Annually",
+    cardtitle2: "126 Days Off Annually",
     cardtitle3: "Actually Use Your Vacation",
     cardtitle4: "Own Your Schedule",
     carddetail1: "Enjoy a healthy work-life balance. We keep monthly overtime to a record low of just 4.8 hours.",
-    carddetail2:"Relax and recharge with over a third of the year off, including all weekends and public holidays.",
+    carddetail2: "Relax and recharge with over a third of the year off, including all weekends and public holidays.",
     carddetail3: "We don't just offer paid leave; we encourage it. Our 79.2% usage rate shows we want you to take that trip.",
-    carddetail4:"Life isn't always 9-to-5. Our flextime system lets you adjust your work hours to fit your personal rhythm.",
+    carddetail4: "Life isn't always 9-to-5. Our flextime system lets you adjust your work hours to fit your personal rhythm.",
     cert: "Certified as",
     certtitle: "Minato Ward Work-Life Balance Promotion Company",
     certcontent: "As a company that balances work and child-rearing and creates a comfortable working environment for everyone, Tecdia has been certified as a",
     certcontent2: '"Minato Ward Work-Life Balance Promotion Company"',
     certcontent3: "three times in a row from 2017 to 2021 and 2024. We will continue to work toward becoming a better company."
-    
+
 
   },
   jp: {
@@ -44,7 +44,7 @@ const translations = {
     certcontent3: "に2017年から2021年および2024年まで、3期連続で認定されています。今後もより良い企業を目指して取り組んでまいります。"
 
   },
-  cn : {
+  cn: {
     orghead: "特克迪亚的",
     orghead2: "组织文化",
     workhead: "工作与生活的平衡",
@@ -64,15 +64,19 @@ const translations = {
     certcontent3: "，并在2017年到2021年及2024年连续三次获得该认证。我们将持续努力，成为更加优秀的企业。"
 
   }
-}; 
+};
 
-export default function OrganizationCulture({language}) {
+export default function OrganizationCulture({ language }) {
 
   const t = translations[language]
 
   return (
     // Add responsive padding to the main section
-    <section className="organization-section px-4 sm:px-6 lg:px-8">
+    <section
+      className="organization-section px-4 sm:px-6 lg:px-8"
+      style={{ backgroundColor: "#FB624C" }}
+    >
+
       <div className="organization-wrapper max-w-7xl mx-auto">
         <div className="organization-header text-center">
           {/* Titles now use responsive text sizes from Tailwind */}
@@ -106,14 +110,14 @@ export default function OrganizationCulture({language}) {
           <div className="flex flex-col xl:flex-row bg-pink-200 rounded-xl md:rounded-2xl items-stretch w-full max-w-7xl shadow-lg overflow-hidden">
             {/* Text Section */}
             <div className="w-full xl:w-1/2 p-4 sm:p-6 md:p-8 flex items-center">
-              <p className="organization-paragraph text-sm sm:text-[2rem] md:text-lg leading-relaxed" style={{padding: '10px 20px'}}>
+              <p className="organization-paragraph text-sm sm:text-[2rem] md:text-lg leading-relaxed" style={{ padding: '10px 20px' }}>
                 {t.worktext}
               </p>
             </div>
 
             {/* Cards Section */}
             <div className="w-full xl:w-1/2 bg-pink-800 xl:rounded-r-xl md:xl:rounded-r-2xl rounded-b-xl md:rounded-b-2xl xl:rounded-b-none p-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 p-4 sm:p-6 h-auto xl:h-[600px] xl:content-center" style={{padding: "10px 20px"}}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 p-4 sm:p-6 h-auto xl:h-[600px] xl:content-center" style={{ padding: "10px 20px" }}>
                 <Card
                   title={t.cardtitle1title1}
                   content={t.carddetail1}
