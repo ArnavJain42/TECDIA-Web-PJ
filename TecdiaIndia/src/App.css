@@ -1237,12 +1237,10 @@ body[data-theme='theme-cn'] .organization-section {
 
 .organization-heading {
   font-family: 'Caveat';
-  font-size: 7rem;
   font-weight: 700;
 }
 
 .organization-paragraph {
-  padding: 0px 100px;
   max-width: 800px;
   margin: 0 auto 3rem auto;
   line-height: 1.8;
@@ -1250,14 +1248,6 @@ body[data-theme='theme-cn'] .organization-section {
   font-weight: 900;
   color: rgb(167, 6, 83);
   text-align: center;
-  font-size: 1.7rem;
-}
-
-.wlgrid{
-  padding-left: 50px;
-  padding-right: 50px;
-  padding-top: 50px;
-  padding-bottom: 50px;
 }
 
 .organization-grid {
@@ -1270,10 +1260,14 @@ body[data-theme='theme-cn'] .organization-section {
   background-color: #ffffff;
   border-radius: 1rem;
   padding: 1.5rem;
-  text-align: left;
+  text-align: center;
   transition: transform 0.3s ease;
   position: relative;
-  height: 260px;
+  min-height: 260px;
+   display: flex;
+   flex-direction: column; /* Added */
+  justify-content: center; /* Added */
+  align-items: center;
 }
 
 .organization-card:hover {
@@ -1321,7 +1315,6 @@ body[data-theme='theme-cn'] .organization-section {
 }
 
 .organization-certified-as {
-  font-size: 6rem;
   color: black;
   font-family: 'Caveat';
   font-weight: 700;
@@ -1333,7 +1326,6 @@ body[data-theme='theme-cn'] .organization-section {
   width: 100%;
   text-align: center;
   font-family: 'Inter';
-  font-size: 3.2rem;
   font-weight: 600;
 }
 
@@ -1358,9 +1350,7 @@ body[data-theme='theme-cn'] .organization-section {
   text-align: center;
   font-size: 1.125rem;
   color: #000000;
-  padding: 0px 40px;
   font-family: 'Inter';
-  font-size: 1.5rem;
   font-weight: 600;
 }
 
