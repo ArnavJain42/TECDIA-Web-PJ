@@ -31,16 +31,16 @@
   src: url('./fonts/SanMarinoBeach-2OOLW.ttf') format('truetype');
 }
 body[data-theme='theme-en'] {
-  background-color: rgb(125, 168, 255);
+  background-color: #7ADAA5;
   
 }
 
 body[data-theme='theme-jp'] {
-  background-color: rgb(255, 95, 37)
+  background-color: #77BEF0;
 }
 
 body[data-theme='theme-cn'] {
-  background-color: rgb(81, 255, 81);
+  background-color: #640D5F;
 }
 
 
@@ -1198,11 +1198,22 @@ font-weight: 700;
 }
 
 .organization-section {
-  background: #fdfae6; /* A neutral cream background as default */
   padding: 4rem 2rem;
   transition: background-color 0.5s ease; /* Smooth transition between themes */
 }
+body[data-theme='theme-en'] .organization-section {
+  background-color: #E1AA36;
+}
 
+/* Japanese Theme */
+body[data-theme='theme-jp'] .organization-section {
+  background-color: #EA5B6F;
+}
+
+/* Chinese Theme */
+body[data-theme='theme-cn'] .organization-section {
+  background-color: #FFCC00;
+}
 .organization-wrapper {
   max-width: 1400px;
   margin: 0 auto;
@@ -1254,12 +1265,10 @@ font-weight: 700;
 
 .organization-heading {
   font-family: 'Caveat';
-  font-size: 7rem;
   font-weight: 700;
 }
 
 .organization-paragraph {
-  padding: 0px 100px;
   max-width: 800px;
   margin: 0 auto 3rem auto;
   line-height: 1.8;
@@ -1267,14 +1276,6 @@ font-weight: 700;
   font-weight: 900;
   color: rgb(167, 6, 83);
   text-align: center;
-  font-size: 1.7rem;
-}
-
-.wlgrid{
-  padding-left: 50px;
-  padding-right: 50px;
-  padding-top: 50px;
-  padding-bottom: 50px;
 }
 
 .organization-grid {
@@ -1287,10 +1288,14 @@ font-weight: 700;
   background-color: #ffffff;
   border-radius: 1rem;
   padding: 1.5rem;
-  text-align: left;
+  text-align: center;
   transition: transform 0.3s ease;
   position: relative;
-  height: 260px;
+  min-height: 260px;
+   display: flex;
+   flex-direction: column; /* Added */
+  justify-content: center; /* Added */
+  align-items: center;
 }
 
 .organization-card:hover {
@@ -1338,7 +1343,6 @@ font-weight: 700;
 }
 
 .organization-certified-as {
-  font-size: 6rem;
   color: black;
   font-family: 'Caveat';
   font-weight: 700;
@@ -1350,7 +1354,6 @@ font-weight: 700;
   width: 100%;
   text-align: center;
   font-family: 'Inter';
-  font-size: 3.2rem;
   font-weight: 600;
 }
 
@@ -1375,9 +1378,7 @@ font-weight: 700;
   text-align: center;
   font-size: 1.125rem;
   color: #000000;
-  padding: 0px 40px;
   font-family: 'Inter';
-  font-size: 1.5rem;
   font-weight: 600;
 }
 
@@ -1388,13 +1389,6 @@ font-weight: 700;
   font-weight: 600;
 }
 
-.president-section {
-  min-height: 100vh;
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(to bottom right, #fff1e6, #ffd8be, #ffaaa5);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
 
 /* Background Elements */
 .background-effects .pulse {
@@ -2702,13 +2696,6 @@ body[data-theme='theme-cn'] .contact-head{
   box-sizing: border-box;
 }
 
-/* Main Container */
-.president-section {
-  position: relative;
-  overflow: hidden;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
 
 /* Background Effects */
 .background-effects {
@@ -2805,7 +2792,18 @@ body[data-theme='theme-cn'] .contact-head{
   position: relative;
   overflow: hidden;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+body[data-theme='theme-en'] .president-section {
+  background-color: #9cf6f6;
+}
+
+body[data-theme='theme-jp'] .president-section {
+  background-color: #c9a690;
+}
+
+body[data-theme='theme-cn'] .president-section {
+  background-color: #06d6a0;
 }
 
 /* Background Effects */

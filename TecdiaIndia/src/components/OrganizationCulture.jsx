@@ -71,17 +71,20 @@ export default function OrganizationCulture({language}) {
   const t = translations[language]
 
   return (
-    <section className="organization-section">
-      <div className="organization-wrapper">
-        <div className="organization-header">
-          <h1 className="organization-title xl:text-9xl md:text-9xl sm:text-8xl text-6xl">
+    // Add responsive padding to the main section
+    <section className="organization-section px-4 sm:px-6 lg:px-8">
+      <div className="organization-wrapper max-w-7xl mx-auto">
+        <div className="organization-header text-center">
+          {/* Titles now use responsive text sizes from Tailwind */}
+          <h1 className="organization-title text-6xl sm:text-7xl md:text-8xl lg:text-9xl">
             {t.orghead}
           </h1>
-          <h2 className="organization-subtitle xl:text-6xl md:text-6xl sm:text-4xl text-3xl">
+          <h2 className="organization-subtitle text-3xl sm:text-4xl md:text-5xl lg:text-6xl mt-2">
             {t.orghead2}
           </h2>
 
-          <div style={{ height: "600px", position: "relative" }}>
+          {/* Responsive container for the gallery, height adjusts with screen size */}
+          <div className="relative h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] my-8">
             <CircularGallery
               bend={3}
               textColor="#000000"
@@ -91,9 +94,13 @@ export default function OrganizationCulture({language}) {
           </div>
         </div>
 
-        <div className="flex flex-col items-center px-4 sm:px-6 md:px-8 lg:px-12">
-          <div className="text-center mb-6 md:mb-8">
-            <span className="organization-heading">{t.workhead}</span>
+        {/* Work-Life Balance Section */}
+        <div className="flex flex-col items-center px-4 sm:px-6 md:px-8 lg:px-12 mt-12">
+          <div className="text-center mb-6 md:mb-8organization-heading-box">
+            {/* Responsive heading for the section */}
+            <h2 className="organization-heading text-3xl sm:text-4xl md:text-5xl">
+              {t.workhead}
+            </h2>
           </div>
 
           <div className="flex flex-col xl:flex-row bg-pink-200 rounded-xl md:rounded-2xl items-stretch w-full max-w-7xl shadow-lg overflow-hidden">
@@ -145,13 +152,20 @@ export default function OrganizationCulture({language}) {
               <span>{t.certtitle}</span>
             </div>
 
-            <div className="organization-certification-box w-[100%]">
-              <div className="flex">
-                <div className=" organization-certification-logo border-solid border-4">
-                  <img src="./minato.png" alt="Minato" />
+            <div className="organization-certification-box w-full mt-6">
+              {/* Layout switches from vertical to horizontal */}
+              <div className="flex flex-col md:flex-row items-center gap-6">
+                <div className="organization-certification-logo border-solid border-4 flex-shrink-0">
+                  {/* Responsive image size */}
+                  <img
+                    src="./minato.png"
+                    alt="Minato"
+                    className="w-[150px] md:w-[200px]"
+                  />
                 </div>
                 <div className="organization-certification-text">
-                  <p>
+                  {/* Responsive font size and text alignment */}
+                  <p className="text-base md:text-lg text-center md:text-left">
                     {t.certcontent}{" "}
                     <span className="highlighted-text">
                       {t.certcontent2}
@@ -168,7 +182,7 @@ export default function OrganizationCulture({language}) {
   );
 }
 
-// eslint-disable-next-line no-unused-vars
+// Card component remains the same, its container is now responsive.
 function Card({ title, content, Icon, color }) {
   return (
     <div className={`organization-card ${color}`}>

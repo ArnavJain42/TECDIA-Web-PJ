@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +16,17 @@ import Footer from "./components/Footer.jsx";
 import OrganizationCulture from "./components/OrganizationCulture.jsx";
 import CherryBlossomTree from "./components/cherryBlossomTree.jsx";
 import WhatIsTecdia from "./components/WhatIsTecdia.jsx";
-import { Search, User, Mail, Phone, MapPin, FileText, MessageCircle, Loader2, X } from 'lucide-react';
+import {
+  Search,
+  User,
+  Mail,
+  Phone,
+  MapPin,
+  FileText,
+  MessageCircle,
+  Loader2,
+  X,
+} from "lucide-react";
 import Navbar from "./components/Navbar.jsx";
 // const images = [
 //   { id: 1, img: "./画像 (1).png" },
@@ -36,7 +45,8 @@ const translations = {
     menuRight: ["INTRODUCTION", "CHARACTER"],
     heroTitle: "TO BE HERO X",
     apply: "Apply Now",
-    landingpara: "Your Let's do this will change the world. Surprise the world with unconventional ideas and team power.",
+    landingpara:
+      "Your Let's do this will change the world. Surprise the world with unconventional ideas and team power.",
     join: "Come Join Us",
     wht: "WHAT IS ",
     wht1: "",
@@ -76,10 +86,11 @@ const translations = {
     menuRight: ["イントロダクション", "キャラクター"],
     heroTitle: "トゥー・ビー・ヒーローX",
     apply: "申し込む",
-    landingpara: "あなたの「やってみよう」が世界を変える。型破りなアイデアとチームパワーで世界を驚かせよう。",
+    landingpara:
+      "あなたの「やってみよう」が世界を変える。型破りなアイデアとチームパワーで世界を驚かせよう。",
     join: "参加しよう",
     wht: "",
-    wht1:"とは何ですか" , 
+    wht1: "とは何ですか",
     profile: "会社概要",
     err1: 'メールアドレスとPINの両方を入力してください。',
     err2: '申請状況の取得に失敗しました。資格情報を確認して、もう一度お試しください。',
@@ -116,7 +127,8 @@ const translations = {
     menuRight: ["介绍", "角色"],
     heroTitle: "成为英雄X",
     apply: "立即申请",
-    landingpara: "你的“让我们来做”将改变世界。用非常规的想法和团队力量来惊艳世界。",
+    landingpara:
+      "你的“让我们来做”将改变世界。用非常规的想法和团队力量来惊艳世界。",
     join: "来加入我们",
     wht: "",
     profile: "公司简介",
@@ -154,18 +166,18 @@ const ApplicationStatusModal = ({ isOpen, onClose, language, translations }) => 
   const t = translations?.[language] || {};
   
   const [formData, setFormData] = useState({
-    email: '',
-    PIN: ''
+    email: "",
+    PIN: "",
   });
   const [applicationData, setApplicationData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -176,17 +188,20 @@ const ApplicationStatusModal = ({ isOpen, onClose, language, translations }) => 
     }
 
     setLoading(true);
-    setError('');
+    setError("");
     setApplicationData(null);
 
     try {
-      const response = await fetch('https://tecdia-ind-backend.onrender.com/api/applications/check-status', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      });
+      const response = await fetch(
+        "https://tecdia-ind-backend.onrender.com/api/applications/check-status",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -203,9 +218,9 @@ const ApplicationStatusModal = ({ isOpen, onClose, language, translations }) => 
   };
 
   const handleClose = () => {
-    setFormData({ email: '', PIN: '' });
+    setFormData({ email: "", PIN: "" });
     setApplicationData(null);
-    setError('');
+    setError("");
     setLoading(false);
     if (onClose) {
       onClose();
@@ -223,7 +238,7 @@ const ApplicationStatusModal = ({ isOpen, onClose, language, translations }) => 
       case 'pending':
         return 'status-pending';
       default:
-        return 'status-default';
+        return "status-default";
     }
   };
 
@@ -232,11 +247,8 @@ const ApplicationStatusModal = ({ isOpen, onClose, language, translations }) => 
   return (
     <div className="modal-overlay">
       {/* Backdrop */}
-      <div 
-        className="modal-backdrop"
-        onClick={handleClose}
-      ></div>
-      
+      <div className="modal-backdrop" onClick={handleClose}></div>
+
       {/* Modal */}
       <div className="modal-container">
         <div className="modal-content">
@@ -296,11 +308,7 @@ const ApplicationStatusModal = ({ isOpen, onClose, language, translations }) => 
                     />
                   </div>
 
-                  {error && (
-                    <div className="error-message">
-                      {error}
-                    </div>
-                  )}
+                  {error && <div className="error-message">{error}</div>}
 
                   <button
                     onClick={handleSubmit}
@@ -429,51 +437,48 @@ export default function App() {
   const navigate = useNavigate();
 
   const initializeGridText = () => {
-      const element = document.getElementById('gridText');
-      if (!element) return;
+    const element = document.getElementById("gridText");
+    if (!element) return;
 
-      const text = element.textContent;
-      const fragment = document.createDocumentFragment();
-      
-      [...text].forEach((char, index) => {
-          const span = document.createElement('span');
-          span.className = 'char';
-          span.textContent = char === ' ' ? '\u00A0' : char;
-          span.style.setProperty('--index', index);
-          fragment.appendChild(span);
-      });
+    const text = element.textContent;
+    const fragment = document.createDocumentFragment();
 
-      
-      element.innerHTML = '';
-      element.appendChild(fragment);
+    [...text].forEach((char, index) => {
+      const span = document.createElement("span");
+      span.className = "char";
+      span.textContent = char === " " ? "\u00A0" : char;
+      span.style.setProperty("--index", index);
+      fragment.appendChild(span);
+    });
+
+    element.innerHTML = "";
+    element.appendChild(fragment);
   };
-  if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                  initializeGridText();
-                  observer.disconnect();
-              }
-          });
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          initializeGridText();
+          observer.disconnect();
+        }
       });
-      
-      observer.observe(document.body);
+    });
+
+    observer.observe(document.body);
   } else {
-      // Fallback for older browsers
-      document.addEventListener('DOMContentLoaded', initializeGridText);
+    // Fallback for older browsers
+    document.addEventListener("DOMContentLoaded", initializeGridText);
   }
 
   const handleApplyClick = () => {
-    navigate('/form');
+    navigate("/form");
   };
-  
+
   // const handleProductClick = () => {
   //   navigate('/product');
   // };
 
   const t = translations[language];
-
-  
 
   // Auto-detect browser language on first load
   useEffect(() => {
@@ -487,7 +492,7 @@ export default function App() {
     }
   }, []);
   const [loaderPhase, setLoaderPhase] = useState(1);
-  
+
   useEffect(() => {
     let timer;
     if (loaderPhase === 1) {
@@ -499,21 +504,21 @@ export default function App() {
   }, [loaderPhase]);
 
   useEffect(() => {
-  const handleResize = () => {
-    setCardSize(window.innerWidth < 600 ? 350 : 450);
-  };
+    const handleResize = () => {
+      setCardSize(window.innerWidth < 600 ? 350 : 450);
+    };
 
-  // Set initial size
-  handleResize();
+    // Set initial size
+    handleResize();
 
-  // Add event listener
-  window.addEventListener('resize', handleResize);
+    // Add event listener
+    window.addEventListener("resize", handleResize);
 
-  // Cleanup
-  return () => window.removeEventListener('resize', handleResize);
-}, []);
+    // Cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-useEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       const landingHeight =
         document.querySelector(".landing-section")?.offsetHeight || 0;
@@ -570,11 +575,27 @@ useEffect(() => {
   // }, [progress]);
 
   if (loaderPhase === 1) {
-    return <LoaderKatakana text="テクディア" speed={45} characterSet="katakana" subtitle="Tecdia - Recruiting in India" style={{position: "fixed"}}/>;
+    return (
+      <LoaderKatakana
+        text="テクディア"
+        speed={45}
+        characterSet="katakana"
+        subtitle="Tecdia - Recruiting in India"
+        style={{ position: "fixed" }}
+      />
+    );
   }
 
   if (loaderPhase === 2) {
-    return <LoaderKatakana text="Tecdia" speed={110} characterSet="latin" subtitle="Tecdia - Recruiting in India" style={{position: "fixed"}}/>;
+    return (
+      <LoaderKatakana
+        text="Tecdia"
+        speed={110}
+        characterSet="latin"
+        subtitle="Tecdia - Recruiting in India"
+        style={{ position: "fixed" }}
+      />
+    );
   }
   return (
     <div className="page">
@@ -595,7 +616,7 @@ useEffect(() => {
           isScrolled={isScrolled}
         />
       </section>
-    
+
       {/* {!menuOpen && (
         <div className="menu-btn" onClick={() => setMenuOpen(true)}>
           <div className="menu-lines" />
@@ -636,7 +657,7 @@ useEffect(() => {
         </div>
       </div>
       <img src="./logo-tecdia.png" alt="Logo" className="logo" /> */}
-       <img src="./cherry.png" alt="Right Side" className="side-image" />
+      <img src="./cherry.png" alt="Right Side" className="side-image" />
       {/* Language Toggle */}
       {/* <div className="language-toggle-container">
         <LanguageToggle onLanguageChange={setLanguage} />
@@ -665,30 +686,31 @@ useEffect(() => {
         <span>{t.logoText} </span>
         
       </div> */}
-      
 
-
-
-      <section ref={sectionRef} className="landing-section" >
-        
-        <div style={{display:'flex', flexDirection: 'column' , gap: '20px'}}>
-          <span className="TecName" id="gridText">{t.logoText}</span>
+      <section ref={sectionRef} className="landing-section">
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          <span className="TecName" id="gridText">
+            {t.logoText}
+          </span>
           <p className="landing-para">{t.landingpara} </p>
-        <button className="join-us" onClick={handleApplyClick}>{t.join}</button></div>
-      <div>
-      <img
-          src="/ChatGPT_Image_Jul_23__2025__01_35_23_PM-removebg-preview.png"
-          alt="Lady Greeting"
-          className="greeting-image"
-        />
-      </div>
+          <button className="join-us cursor-pointer hover:scale-115" onClick={handleApplyClick}>
+            {t.join}
+          </button>
+        </div>
+        <div>
+          <img
+            src="/ChatGPT_Image_Jul_23__2025__01_35_23_PM-removebg-preview.png"
+            alt="Lady Greeting"
+            className="greeting-image"
+          />
+        </div>
       </section>
       <section className="landing-foot">
         <MarqueeComponent language={language}></MarqueeComponent>
       </section>
       {/* <section class="tecdia-section"> */}
-        {/* <CherryBlossomTree /> */}
-        {/* <div className="whatpic-container">
+      {/* <CherryBlossomTree /> */}
+      {/* <div className="whatpic-container">
 
         
   
@@ -718,23 +740,20 @@ useEffect(() => {
             </div>
         </div>
     </section> */}
-    <section id="about">
+      <section id="about">
         <WhatIsTecdia language={language} cardSize={cardSize} t={t} />
       </section>
-      
 
       <section className="tec-section" id="TecNum">
-      {/* Squares background */}
-      <div className="tec-squares-bg">
-        <Squares 
-          speed={0.5} 
-          squareSize={40}
-          direction="diagonal"
-          borderColor="#0f57d4"
-        >
-          
-        </Squares>
-      </div>
+        {/* Squares background */}
+        <div className="tec-squares-bg">
+          <Squares
+            speed={0.5}
+            squareSize={40}
+            direction="diagonal"
+            borderColor="#0f57d4"
+          ></Squares>
+        </div>
 
       {/* Foreground content */}
       <TecdiaNumber language={language} />
@@ -745,7 +764,6 @@ useEffect(() => {
       </div>
       <Footer language={language}/>
       {/* Background Animation */}
-      
     </div>
   );
 }

@@ -53,10 +53,10 @@ export default function WhatIsTecdia({ language, cardSize, t }) {
         </p>
 
         <div className="tecdia-buttons">
-          <button className="btn" onClick={handleProductClick}>
+          <button className="btn cursor-pointer hover:scale-115" onClick={handleProductClick}>
             {t.profile}
           </button>
-          <button className="btn" onClick={handleApplyClick}>
+          <button className="btn cursor-pointer hover:scale-115" onClick={handleApplyClick}>
             {t.apply}
           </button>
         </div>
