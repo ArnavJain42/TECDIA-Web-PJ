@@ -1579,29 +1579,29 @@ body[data-theme='theme-cn'] .organization-section {
   color: #fff;
 }
 body[data-theme='theme-en'] .App-body{
-  background-color: rgb(5, 88, 255);
+  background-color: rgb(83, 137, 246);
   
 }
 
 body[data-theme='theme-jp'] .App-body{
-  background-color: rgb(255, 95, 37)
+  background-color: rgb(237, 116, 72)
 }
 
 body[data-theme='theme-cn'] .App-body{
-  background-color: rgba(0, 252, 0, 0.464);
+  background-color: rgba(110, 247, 126, 0.673);
 }
 
 body[data-theme='theme-en'] .contact-head{
-  background-color: rgb(5, 88, 255);
+  background-color: rgb(73, 127, 236);
   
 }
 
 body[data-theme='theme-jp'] .contact-head{
-  background-color: rgb(255, 95, 37)
+  background-color: rgb(250, 122, 75)
 }
 
 body[data-theme='theme-cn'] .contact-head{
-  background-color: rgb(0, 191, 0);
+  background-color: rgb(88, 246, 88);
 }
 
 .App {

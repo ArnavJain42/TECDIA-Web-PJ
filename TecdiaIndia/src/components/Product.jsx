@@ -4,7 +4,7 @@ import { useLanguage } from '../contexts/LanguageContext.jsx';
 import Footer from "./Footer.jsx";
 
 const translations = {
-    en : {
+    en: {
         apply: "Back to home",
         prodhead: "Our Products",
         prodtext1: "Tecdia: Pioneering Semiconductor and Precision Engineering Solutions",
@@ -12,9 +12,9 @@ const translations = {
         prodstandout: "Why Tecdia Stands Out?",
         prodtitle1: "Global R&D Strength:",
         prodtext1_1: "Facilities in Japan (Tokyo/Kyoto) and the U.S. (Silicon Valley) drive cutting-edge innovations.",
-        prodtitle2: "Quality Certifications:",  
+        prodtitle2: "Quality Certifications:",
         prodtext2_1: "ISO 9001, ISO 13485 (medical devices), and ISO 14001 compliance ensure world-class standards.",
-        prodtitle3: "Customer-Centric Approach:",   
+        prodtitle3: "Customer-Centric Approach:",
         prodtext3_1: "Collaborative Kaizen culture and custom solutions (e.g., aspect-ratio-tailored capacitors) address niche demands.",
         prodtitle4: "Innovation:",
         prodtext4_1: "Holds the largest global market share for SLCs and pioneers miniaturized solutions.",
@@ -22,7 +22,7 @@ const translations = {
         prodtext5_1: "In-house dielectric production (Japan) and mass manufacturing (Philippines) ensure quality and cost control.",
         prodcta: "Join us to shape the future of high-frequency electronics and smart manufacturing!",
     },
-    jp : {
+    jp: {
         apply: "ホームに戻る",
         prodhead: "私たちの製品",
         prodtext1: "テクダイヤ：半導体と精密エンジニアリングソリューションの先駆者",
@@ -40,7 +40,7 @@ const translations = {
         prodtext5_1: "日本での自社誘電体生産とフィリピンでの大量生産により、品質とコスト管理を確保しています。",
         prodcta: "高周波エレクトロニクスとスマート製造の未来を共に形作りましょう！",
     },
-    cn : {
+    cn: {
         apply: "返回首页",
         prodhead: "我们的产品",
         prodtext1: "特克迪亚：半导体和精密工程解决方案的先驱",
@@ -64,79 +64,79 @@ const Product = () => {
     // Use global language context instead of local state
     // eslint-disable-next-line no-unused-vars
     const { language, setLanguage } = useLanguage();
-    
+
     const t = translations[language]
 
-  return (
-    <div className="App-body">
-        <img src="./logo-tecdia.png" alt="Logo" className="logo" style={{left: '5px'}}/>
-        <a
-        href="/"
-        rel="noopener noreferrer"
-      ><button className="apply-btn" style={{position: 'fixed', top: '20px', right: '10px'}}>
-       <span className="arrow">↖</span> {t.apply} 
-      </button></a>
-        <div className="language-toggle-container">
-            <LanguageToggle />
-        </div>
-    <div className="App">
-      <div className="container">
-        <header className="header">
-          <h1>{t.prodhead}</h1>
-          {/* <p>Discover our cutting-edge solutions across multiple industries</p> */}
-          <div class="content">
-            <p style={{textAlign: 'center'}}>{t.prodtext1}</p><br />
-            <p class="intro-text">
-              {t.prodtext2}
-            </p>
-
-            <h2 class="section-title">{t.prodstandout}</h2>
-            
-            <ul class="features-list">
-                <li>
-                    <div class="feature-content">
-                        <div class="feature-title">{t.prodtitle1}</div>
-                        <div class="feature-description">{t.prodtext1_1}</div>
-                    </div>
-                </li>
-                <li>
-                    <div class="feature-content">
-                        <div class="feature-title">{t.prodtitle2}</div>
-                        <div class="feature-description">{t.prodtext2_1}</div>
-                    </div>
-                </li>
-                <li>
-                    <div class="feature-content">
-                        <div class="feature-title">{t.prodtitle3}</div>
-                        <div class="feature-description">{t.prodtext3_1}</div>
-                    </div>
-                </li>
-                <li>
-                    <div class="feature-content">
-                        <div class="feature-title">{t.prodtitle4}</div>
-                        <div class="feature-description">{t.prodtext4_1}</div>
-                    </div>
-                </li>
-                <li>
-                    <div class="feature-content">
-                        <div class="feature-title">{t.prodtitle5}</div>
-                        <div class="feature-description">{t.prodtext5_1}</div>
-                    </div>
-                </li>
-            </ul>
-
-            <div class="cta">
-                <h4>{t.prodcta}</h4>
+    return (
+        <div className="App-body">
+            <img src="./logo-tecdia.png" alt="Logo" className="logo" style={{ left: '5px' }} />
+            <a
+                href="/"
+                rel="noopener noreferrer"
+            ><button className="apply-btn" style={{ position: 'fixed', top: '20px', right: '10px' }}>
+                    <span className="arrow">↖</span> {t.apply}
+                </button></a>
+            <div className="language-toggle-container">
+                <LanguageToggle />
             </div>
+            <div className="App">
+                <div className="container">
+                    <header className="header">
+                        <h1>{t.prodhead}</h1>
+                        {/* <p>Discover our cutting-edge solutions across multiple industries</p> */}
+                        <div class="content">
+                            <p style={{ textAlign: 'center' }}>{t.prodtext1}</p><br />
+                            <p class="intro-text">
+                                {t.prodtext2}
+                            </p>
+
+                            <h2 class="section-title">{t.prodstandout}</h2>
+
+                            <ul class="features-list">
+                                <li>
+                                    <div class="feature-content">
+                                        <div class="feature-title">{t.prodtitle1}</div>
+                                        <div class="feature-description">{t.prodtext1_1}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-content">
+                                        <div class="feature-title">{t.prodtitle2}</div>
+                                        <div class="feature-description">{t.prodtext2_1}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-content">
+                                        <div class="feature-title">{t.prodtitle3}</div>
+                                        <div class="feature-description">{t.prodtext3_1}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-content">
+                                        <div class="feature-title">{t.prodtitle4}</div>
+                                        <div class="feature-description">{t.prodtext4_1}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="feature-content">
+                                        <div class="feature-title">{t.prodtitle5}</div>
+                                        <div class="feature-description">{t.prodtext5_1}</div>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <div class="cta">
+                                <h4>{t.prodcta}</h4>
+                            </div>
+                        </div>
+                    </header>
+                    <ProductSlider language={language} />
+                </div>
+
+            </div>
+            <Footer language={language} />
         </div>
-        </header>
-        <ProductSlider language={language}/>
-      </div>
-      
-    </div>
-    <Footer language={language}/>
-    </div>
-  );
+    );
 }
 
 export default Product;
