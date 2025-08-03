@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import LanguageToggle from "./LanguageToggle";
 import Footer from "./Footer";
+import { useLanguage } from '../contexts/LanguageContext.jsx';
 
 const translations = {
   en: {
@@ -141,7 +142,7 @@ const translations = {
   cn: {
     apply: "返回首页",
     logoText: "技术迪亚",
-    herotext1: "你的“让我们来做吧”将改变世界",
+    herotext1: "你的让我们来做吧将改变世界",
     herotext2: "申请表",
     herotext3: "加入我们，用非常规的想法和团队的力量来惊艳世界。",
     recruithead: "招聘流程",
@@ -1423,21 +1424,9 @@ function ScrollingBanner() {
 
 // Main App Component  
 function Form() {
-
-  const [language, setLanguage] = useState("en");
-
-  useEffect(() => {
-      const browserLang = navigator.language || navigator.userLanguage;
-      if (browserLang.startsWith("ja")) {
-        setLanguage("jp");
-      } else if (browserLang.startsWith("zh")) {
-        setLanguage("cn");
-      } else {
-        setLanguage("en");
-      }
-    }, []);
-
-    const t = translations[language]
+  // Use global language context instead of local state
+  const { language } = useLanguage();
+  const t = translations[language]
 
   return (
     
@@ -1450,7 +1439,7 @@ function Form() {
         {t.apply} 
       </button></a>
       <div className="language-toggle-container">
-        <LanguageToggle onLanguageChange={setLanguage} />
+        <LanguageToggle />
       </div>
       <Hero language={language}/>
       <RecruitmentProcess language={language} />

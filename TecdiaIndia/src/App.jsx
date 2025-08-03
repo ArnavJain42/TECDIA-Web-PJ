@@ -400,7 +400,7 @@ export default function App() {
   useEffect(() => {
     let timer;
     if (loaderPhase === 1) {
-      timer = setTimeout(() => setLoaderPhase(2), 800); // Japanese: faster
+      timer = setTimeout(() => setLoaderPhase(2), 1500); // Japanese: faster
     } else if (loaderPhase === 2) {
       timer = setTimeout(() => setLoaderPhase(3), 1500); // English: slower
     }

@@ -2,7 +2,7 @@ import React from "react";
 import DecryptedText from "./DecryptedText";
 
 const LoaderKatakana = ({
-  text = "テクディア",
+  text = "テクダイヤ",
   speed = 100,
   characterSet = "katakana",
   subtitle = "Fusion of India & Japan"

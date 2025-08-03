@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import { MapPin, Phone, Printer, Mail, Globe, Building, Award } from 'lucide-react';
 import Footer from './Footer';
 import LanguageToggle from './LanguageToggle';
-
+import { useLanguage } from '../contexts/LanguageContext.jsx';
 
 const translations = {
   en: {
@@ -23,23 +23,13 @@ const translations = {
   },
 };
 
-
 const Contact = () => {
-
-  const [language, setLanguage] = useState("en");
+  // Use global language context instead of local state
+  // eslint-disable-next-line no-unused-vars
+  const { language, setLanguage } = useLanguage();
   
-    useEffect(() => {
-        const browserLang = navigator.language || navigator.userLanguage;
-        if (browserLang.startsWith("ja")) {
-          setLanguage("jp");
-        } else if (browserLang.startsWith("zh")) {
-          setLanguage("cn");
-        } else {
-          setLanguage("en");
-        }
-      }, []);
-
   const t = translations[language]
+  
   const locations = [
     {
       id: 'japan',
@@ -329,10 +319,10 @@ const ContactCard = ({ location }) => (
               href="/"
               rel="noopener noreferrer"
             ><button className="apply-btn" style={{position: 'fixed', top: '20px', right: '10px'}}>
-              {t.apply} 
+              <span className="arrow">↖</span> {t.apply} 
             </button></a>
               <div className="language-toggle-container">
-                  <LanguageToggle onLanguageChange={setLanguage} />
+                  <LanguageToggle />
               </div>
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-teal-700 text-white py-16">
@@ -363,7 +353,6 @@ const ContactCard = ({ location }) => (
 };
 
 export default Contact;
-
 
 
 

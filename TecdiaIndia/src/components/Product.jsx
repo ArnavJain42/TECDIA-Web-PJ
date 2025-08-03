@@ -1,6 +1,6 @@
 import ProductSlider from "./ProductSlider";
-import {useEffect, useState} from 'react';
 import LanguageToggle from "./LanguageToggle";
+import { useLanguage } from '../contexts/LanguageContext.jsx';
 
 const translations = {
     en : {
@@ -60,22 +60,11 @@ const translations = {
 }
 
 const Product = () => {
-
-
-    const [language, setLanguage] = useState("en");
+    // Use global language context instead of local state
+    // eslint-disable-next-line no-unused-vars
+    const { language, setLanguage } = useLanguage();
     
-      useEffect(() => {
-          const browserLang = navigator.language || navigator.userLanguage;
-          if (browserLang.startsWith("ja")) {
-            setLanguage("jp");
-          } else if (browserLang.startsWith("zh")) {
-            setLanguage("cn");
-          } else {
-            setLanguage("en");
-          }
-        }, []);
-    
-        const t = translations[language]
+    const t = translations[language]
 
   return (
     <div className="App-body">
@@ -87,7 +76,7 @@ const Product = () => {
        <span className="arrow">↖</span> {t.apply} 
       </button></a>
         <div className="language-toggle-container">
-            <LanguageToggle onLanguageChange={setLanguage} />
+            <LanguageToggle />
         </div>
     <div className="App">
       <div className="container">

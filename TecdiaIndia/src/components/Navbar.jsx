@@ -30,7 +30,7 @@ export default function Navbar({
     <>
       {/* Navbar */}
       <div
-        className={`w-full h-[51px] fixed top-0 left-0 z-400 flex px-6 py-3 transition-colors duration-300 ${
+        className={`w-full h-[53px] fixed top-0 left-0 z-400 flex px-6 py-3 transition-colors duration-300 ${
           isScrolled ? "bg-black" : "bg-transparent"
         }`}
       >

@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useLanguage } from '../contexts/LanguageContext.jsx';
 
 const languages = [
   { code: "en", label: "EN", theme: "theme-en", font: "font-en", googleCode: "en" },
@@ -7,7 +8,8 @@ const languages = [
 ];
 
 export default function LanguageToggle({ onLanguageChange }) {
-  const [selectedLang, setSelectedLang] = useState("en");
+  // Use global language context instead of local state
+  const { language: selectedLang, setLanguage: setSelectedLang } = useLanguage();
 
   // Update theme, font, and Google Translate dropdown when selectedLang changes
   useEffect(() => {
@@ -24,11 +26,11 @@ export default function LanguageToggle({ onLanguageChange }) {
       select.dispatchEvent(new Event("change"));
     }
 
-    // Notify parent App
+    // Notify parent component if onLanguageChange prop is provided (for backward compatibility)
     if (onLanguageChange) onLanguageChange(selectedLang);
-  }, [selectedLang]);
+  }, [selectedLang, onLanguageChange]);
 
-  // Watch Google Translate dropdown changes and update local state accordingly
+  // Watch Google Translate dropdown changes and update global state accordingly
   useEffect(() => {
     const updateLangFromGoogle = () => {
       const select = document.querySelector("select.goog-te-combo");
@@ -50,8 +52,11 @@ export default function LanguageToggle({ onLanguageChange }) {
       }
     }, 500);
 
-    return () => observer.disconnect();
-  }, [selectedLang]);
+    return () => {
+      observer.disconnect();
+      clearInterval(interval);
+    };
+  }, [selectedLang, setSelectedLang]);
 
   return (
     <div className="language-toggle">
@@ -59,7 +64,8 @@ export default function LanguageToggle({ onLanguageChange }) {
         <button
           key={lang.code}
           className={`language-button ${selectedLang === lang.code ? "active" : ""}`}
-          onClick={() => setSelectedLang(lang.code)} style={{color:"black"}}
+          onClick={() => setSelectedLang(lang.code)} 
+          style={{color:"black"}}
         >
           {lang.label}
         </button>

@@ -48,7 +48,7 @@ export default function WhatIsTecdia({ language, cardSize, t }) {
           {t.wht1}?
         </h1>
 
-        <p className="tecdia-description">
+        <p className="tecdia-description" style={{padding: '10px'}}>
           <TypingEffect language={language} />
         </p>
 
