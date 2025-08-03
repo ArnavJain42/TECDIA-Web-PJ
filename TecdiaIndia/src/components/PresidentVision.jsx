@@ -125,7 +125,6 @@ const PresidentVision = ({language}) => {
       <div className="content-container">
         <div className="header">
           <h1 className="main-title">{t.head}</h1>
-          <div className="title-underline"></div>
         </div>
 
         <div className="vision-grid">

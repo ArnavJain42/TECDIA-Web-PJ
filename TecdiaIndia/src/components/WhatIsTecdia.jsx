@@ -26,10 +26,10 @@ export default function WhatIsTecdia({ language, cardSize, t }) {
     <section
       className={`tecdia-section transition-colors duration-500 ${
         language === "jp"
-          ? "bg-[#FFCB61]"
+          ? "bg-[#82c7ff]"
           : language === "cn"
-          ? "bg-[#B12C00]"
-          : "bg-[#239BA7]"
+          ? "bg-[#c591ff]"
+          : "bg-[#fed943]"
       }`}
     >
       <div className="whatpic-container">

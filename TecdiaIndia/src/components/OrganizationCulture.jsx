@@ -87,7 +87,7 @@ export default function OrganizationCulture({language}) {
           <div className="relative h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] my-8">
             <CircularGallery
               bend={3}
-              textColor="#000000"
+              textColor="#ffffff"
               borderRadius={0.05}
               scrollEase={0.02}
             />
@@ -102,7 +102,7 @@ export default function OrganizationCulture({language}) {
               {t.workhead}
             </h2>
           </div>
-
+          <br />
           <div className="flex flex-col xl:flex-row bg-pink-200 rounded-xl md:rounded-2xl items-stretch w-full max-w-7xl shadow-lg overflow-hidden">
             {/* Text Section */}
             <div className="w-full xl:w-1/2 p-4 sm:p-6 md:p-8 flex items-center">
@@ -183,6 +183,7 @@ export default function OrganizationCulture({language}) {
 }
 
 // Card component remains the same, its container is now responsive.
+// eslint-disable-next-line no-unused-vars
 function Card({ title, content, Icon, color }) {
   return (
     <div className={`organization-card ${color}`}>

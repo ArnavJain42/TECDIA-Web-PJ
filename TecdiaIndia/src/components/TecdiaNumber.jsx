@@ -251,7 +251,7 @@ const TecdiaNumber = ({ language }) => {
           >
             <UserCheck className="w-12 h-12 mb-3 text-white" />
             <h3 className="text-4xl font-bold mb-2">
-              {counters.satisfaction}%
+              {counters.satisfaction} years
             </h3>
             <p className="text-base">{t.labelsatisfaction}</p>
           </div>
