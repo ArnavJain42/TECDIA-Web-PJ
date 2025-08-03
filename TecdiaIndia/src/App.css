@@ -605,7 +605,7 @@ body[data-theme='theme-cn'] .join-us {
   }
 }
 
-@media (max-height: 700px) {
+@media (max-height: 600px) {
   .greeting-image{
     display: none;
   }
