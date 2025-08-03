@@ -54,15 +54,15 @@ export default function Navbar({
               )}
               <div className="menu" style={{color: 'white'}}>
                 <div className="menu-sections">
-                <a href="#about"><button className="menubtn hover:scale-110" onClick={() => setMenuOpen(false)}>What is Tecdia?</button></a>
-                <a href="#TecNum"><button className="menubtn hover:scale-110" onClick={() => setMenuOpen(false)}>Tecdia in Numbers</button></a>
-                <a href="#Culture"><button className="menubtn hover:scale-110" onClick={() => setMenuOpen(false)}>Tecdia's Culture</button></a>
-                <a href="#vision"><button className="menubtn hover:scale-110" onClick={() => setMenuOpen(false)}>President Vision</button></a>
+                <a href="#about"><button className="menubtn hover:scale-110" onClick={() => setMenuOpen(false)}>{t.navsection1}</button></a>
+                <a href="#TecNum"><button className="menubtn hover:scale-110" onClick={() => setMenuOpen(false)}>{t.navsection2}</button></a>
+                <a href="#Culture"><button className="menubtn hover:scale-110" onClick={() => setMenuOpen(false)}>{t.navsection3}</button></a>
+                <a href="#vision"><button className="menubtn hover:scale-110" onClick={() => setMenuOpen(false)}>{t.navsection4}</button></a>
                 </div>
                 <div className="menu-page">
-                <button onClick={() => handleProductClick()} className="menubtn hover:scale-110">Products</button>
-                <button onClick={() => handleContactClick()} className="menubtn hover:scale-110">Contact</button>
-                <button onClick={() => setIsModalOpen(true) & setMenuOpen(false)} className="menubtn hover:scale-110">Check Application Status</button>
+                <button onClick={() => handleProductClick()} className="menubtn hover:scale-110">{t.navpage1}</button>
+                <button onClick={() => handleContactClick()} className="menubtn hover:scale-110">{t.navpage2}</button>
+                <button onClick={() => setIsModalOpen(true) & setMenuOpen(false)} className="menubtn hover:scale-110">{t.navpage3}</button>
                 </div>
               </div>
             </div>

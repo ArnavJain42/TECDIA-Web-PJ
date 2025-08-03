@@ -325,7 +325,7 @@ const ContactCard = ({ location }) => (
                   <LanguageToggle />
               </div>
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-teal-700 text-white py-16">
+      <div className="contact-head text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">{t.contacthead}</h1>
@@ -347,7 +347,7 @@ const ContactCard = ({ location }) => (
       </div>
 
       {/* Footer Note */}
-      <Footer />
+      <Footer language={language}/>
     </div>
   );
 };

@@ -1,5 +1,31 @@
 import React, { useEffect, useRef, useCallback, useMemo } from "react";
 
+const translation = {
+  en: {
+    name : "Shingo Koyama",
+    contactText : "Contact Me",
+    title:"President of Tecdia Inc.",
+    handle:"president",
+    status:"Leading Tecdia",
+  },
+  jp: {
+    name: "小山 真悟",
+    contactText: "お問い合わせ",
+    title: "株式会社テクダイヤ 代表取締役社長",
+    handle: "社長",
+    status: "テクダイヤを牽引中"
+
+  },
+  cn: {
+    name: "小山真悟",
+    contactText: "联系我",
+    title: "Tecdia公司总裁",
+    handle: "总裁",
+    status: "领导特克迪亚"
+
+  }
+}
+
 const DEFAULT_BEHIND_GRADIENT =
   "radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y), rgba(255, 215, 0, 0.15) 4%, rgba(255, 165, 0, 0.12) 10%, rgba(255, 140, 0, 0.08) 30%, transparent 70%), radial-gradient(35% 52% at 55% 20%, rgba(0, 255, 255, 0.08) 0%, transparent 100%), conic-gradient(from 124deg at 50% 50%, rgba(0, 255, 255, 0.25) 0%, rgba(64, 224, 255, 0.15) 40%, rgba(64, 224, 255, 0.15) 60%, rgba(0, 255, 255, 0.25) 100%)";
 
@@ -29,13 +55,11 @@ const ProfileCardComponent = ({
   className = "",
   enableTilt = true,
   name = "Shingo Koyama",
-  title = "CEO",
-  handle = "javicodes",
-  status = "Online",
-  contactText = "Contact Me",
   showUserInfo = true,
   onContactClick,
+  language
 }) => {
+  const t = translation[language]
   const wrapRef = useRef(null);
   const cardRef = useRef(null);
 
@@ -480,10 +504,10 @@ const ProfileCardComponent = ({
               
               <div className="space-y-2">
                 <h3 className="text-3xl font-bold text-white drop-shadow-lg">
-                  {"Shingo Koyama"}
+                  {t.name}
                 </h3>
                 <p className="text-base text-slate-300 font-normal">
-                  {title}
+                  {t.title}
                 </p>
               </div>
             </div>
@@ -508,10 +532,10 @@ const ProfileCardComponent = ({
                   
                   <div className="flex flex-col gap-0.5">
                     <div className="text-sm font-semibold text-white">
-                      @{handle}
+                      @{t.handle}
                     </div>
                     <div className="text-xs text-green-400 font-medium">
-                      {status}
+                      {t.status}
                     </div>
                   </div>
                 </div>
@@ -523,7 +547,7 @@ const ProfileCardComponent = ({
                   type="button"
                   aria-label={`Contact ${name || "user"}`}
                 >
-                  {contactText}
+                  {t.contactText}
                 </button>
               </div>
             )}

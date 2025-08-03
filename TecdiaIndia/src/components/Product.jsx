@@ -1,6 +1,7 @@
 import ProductSlider from "./ProductSlider";
 import LanguageToggle from "./LanguageToggle";
 import { useLanguage } from '../contexts/LanguageContext.jsx';
+import Footer from "./Footer.jsx";
 
 const translations = {
     en : {
@@ -131,7 +132,9 @@ const Product = () => {
         </header>
         <ProductSlider language={language}/>
       </div>
+      
     </div>
+    <Footer language={language}/>
     </div>
   );
 }

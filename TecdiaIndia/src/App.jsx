@@ -41,6 +41,32 @@ const translations = {
     wht: "WHAT IS ",
     wht1: "",
     profile: "Company Profile",
+    err1: 'Please fill in both email and PIN fields.',
+    err2: 'Failed to fetch application status. Please check your credentials and try again.',
+    statushead: "Check Application Status",
+    mess: "Enter your email and PIN to check your application status",
+    email: "Email Address",
+    emailplace: "Enter your email address",
+    pin: "PIN",
+    pinplace: "Enter your PIN",
+    check1: "Checking Status...",
+    check2: "Check Status",
+    email2: "Email",
+    phone: "Phone",
+    position: "Position",
+    resume: "Resume",
+    view: "View Resume",
+    check3: "Check Another Status",
+    additional: "Additional Query",
+    navsection1: "What is Tecdia?",
+    navsection2: "Tecdia in Numbers",
+    navsection3: "Tecdia's Culture",
+    navsection4: "President Vision",
+    navpage1: "Products",
+    navpage2: "Contact",
+    navpage3: "Check Application Status",
+
+
   },
   jp: {
     logoText: "テクダイヤ",
@@ -55,6 +81,32 @@ const translations = {
     wht: "",
     wht1:"とは何ですか" , 
     profile: "会社概要",
+    err1: 'メールアドレスとPINの両方を入力してください。',
+    err2: '申請状況の取得に失敗しました。資格情報を確認して、もう一度お試しください。',
+    statushead: "申請状況の確認",
+    mess: "申請状況を確認するには、メールアドレスとPINを入力してください",
+    email: "メールアドレス",
+    emailplace: "メールアドレスを入力してください",
+    pin: "PIN",
+    pinplace: "PINを入力してください",
+    check1: "状況を確認中...",
+    check2: "状況を確認する",
+    email2: "メール",
+    phone: "電話番号",
+    position: "応募職種",
+    resume: "履歴書",
+    view: "履歴書を見る",
+    check3: "別の状況を確認する",
+    additional: "追加の問い合わせ",
+    navsection1: "テクダイヤとは？",
+    navsection2: "数字で見るテクダイヤ",
+    navsection3: "テクダイヤのカルチャー",
+    navsection4: "社長のビジョン",
+    navpage1: "製品情報",
+    navpage2: "お問い合わせ",
+    navpage3: "応募状況を確認"
+
+
   },
   cn: {
     logoText: "特克迪亚",
@@ -69,10 +121,38 @@ const translations = {
     wht: "",
     profile: "公司简介",
     wht1: "是什麼",
+    err1: '请填写邮箱和PIN码。',
+    err2: '获取申请状态失败。请检查您的凭证后重试。',
+    statushead: "查看申请状态",
+    mess: "请输入您的邮箱和PIN码以查看申请状态",
+    email: "电子邮箱",
+    emailplace: "请输入您的电子邮箱地址",
+    pin: "PIN码",
+    pinplace: "请输入您的PIN码",
+    check1: "正在查询状态...",
+    check2: "查询状态",
+    email2: "邮箱",
+    phone: "电话",
+    position: "申请职位",
+    resume: "简历",
+    view: "查看简历",
+    check3: "查询另一个状态",
+    additional: "其他问题",
+    navsection1: "什么是特克迪亚？",
+    navsection2: "数字中的特克迪亚",
+    navsection3: "特克迪亚的企业文化",
+    navsection4: "总裁愿景",
+    navpage1: "产品",
+    navpage2: "联系",
+    navpage3: "查看申请状态"
+
+
   },
 };
 
-const ApplicationStatusModal = ({ isOpen, onClose }) => {
+const ApplicationStatusModal = ({ isOpen, onClose, language, translations }) => {
+  const t = translations?.[language] || {};
+  
   const [formData, setFormData] = useState({
     email: '',
     PIN: ''
@@ -91,7 +171,7 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
 
   const handleSubmit = async () => {
     if (!formData.email || !formData.PIN) {
-      setError('Please fill in both email and PIN fields.');
+      setError(t.err1 || 'Please fill in all fields');
       return;
     }
 
@@ -115,7 +195,7 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
       const data = await response.json();
       setApplicationData(data);
     } catch (err) {
-      setError('Failed to fetch application status. Please check your credentials and try again.');
+      setError(t.err2 || 'Error checking application status');
       console.error('Error:', err);
     } finally {
       setLoading(false);
@@ -127,11 +207,15 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
     setApplicationData(null);
     setError('');
     setLoading(false);
-    onClose();
+    if (onClose) {
+      onClose();
+    }
   };
 
   const getStatusClass = (status) => {
-    switch (status?.toLowerCase()) {
+    if (!status) return 'status-default';
+    
+    switch (status.toLowerCase()) {
       case 'approved':
         return 'status-approved';
       case 'rejected':
@@ -160,11 +244,12 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
           <div className="modal-header">
             <div className="modal-header-content">
               <h2 className="modal-title">
-                Check Application Status
+                {t.statushead || 'Application Status'}
               </h2>
               <button
                 onClick={handleClose}
                 className="close-button"
+                type="button"
               >
                 <X className="close-icon" />
               </button>
@@ -177,13 +262,13 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
               // Form Section
               <div>
                 <p className="form-description">
-                  Enter your email and PIN to check your application status
+                  {t.mess || 'Enter your email and PIN to check application status'}
                 </p>
 
                 <div className="form-fields">
                   <div className="field-group">
                     <label htmlFor="email" className="field-label">
-                      Email Address
+                      {t.email || 'Email'}
                     </label>
                     <input
                       type="email"
@@ -192,13 +277,13 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
                       value={formData.email}
                       onChange={handleInputChange}
                       className="field-input"
-                      placeholder="Enter your email address"
+                      placeholder={t.emailplace || 'Enter your email'}
                     />
                   </div>
 
                   <div className="field-group">
                     <label htmlFor="PIN" className="field-label">
-                      PIN
+                      {t.pin || 'PIN'}
                     </label>
                     <input
                       type="text"
@@ -207,7 +292,7 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
                       value={formData.PIN}
                       onChange={handleInputChange}
                       className="field-input"
-                      placeholder="Enter your PIN"
+                      placeholder={t.pinplace || 'Enter your PIN'}
                     />
                   </div>
 
@@ -221,16 +306,17 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
                     onClick={handleSubmit}
                     disabled={loading}
                     className={`submit-button ${loading ? 'submit-button-loading' : ''}`}
+                    type="button"
                   >
                     {loading ? (
                       <>
                         <Loader2 className="button-icon button-icon-loading" />
-                        Checking Status...
+                        {t.check1 || 'Checking...'}
                       </>
                     ) : (
                       <>
                         <Search className="button-icon" />
-                        Check Status
+                        {t.check2 || 'Check Status'}
                       </>
                     )}
                   </button>
@@ -243,10 +329,10 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
                   <div className="application-header-content">
                     <h3 className="applicant-name">
                       <User className="applicant-icon" />
-                      {applicationData.name}
+                      {applicationData.name || 'N/A'}
                     </h3>
                     <span className={`status-badge ${getStatusClass(applicationData.status)}`}>
-                      {applicationData.status}
+                      {applicationData.status || 'Unknown'}
                     </span>
                   </div>
                 </div>
@@ -255,39 +341,43 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
                   <div className="detail-item">
                     <Mail className="detail-icon" />
                     <div className="detail-content">
-                      <p className="detail-label">Email</p>
-                      <p className="detail-value">{applicationData.email}</p>
+                      <p className="detail-label">{t.email2 || 'Email'}</p>
+                      <p className="detail-value">{applicationData.email || 'N/A'}</p>
                     </div>
                   </div>
 
                   <div className="detail-item">
                     <Phone className="detail-icon" />
                     <div className="detail-content">
-                      <p className="detail-label">Phone</p>
-                      <p className="detail-value">{applicationData.phone}</p>
+                      <p className="detail-label">{t.phone || 'Phone'}</p>
+                      <p className="detail-value">{applicationData.phone || 'N/A'}</p>
                     </div>
                   </div>
 
                   <div className="detail-item">
                     <MapPin className="detail-icon" />
                     <div className="detail-content">
-                      <p className="detail-label">Position</p>
-                      <p className="detail-value">{applicationData.position}</p>
+                      <p className="detail-label">{t.position || 'Position'}</p>
+                      <p className="detail-value">{applicationData.position || 'N/A'}</p>
                     </div>
                   </div>
 
                   <div className="detail-item">
                     <FileText className="detail-icon" />
                     <div className="detail-content">
-                      <p className="detail-label">Resume</p>
-                      <a 
-                        href={applicationData.resumeLink} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="resume-link"
-                      >
-                        View Resume
-                      </a>
+                      <p className="detail-label">{t.resume || 'Resume'}</p>
+                      {applicationData.resumeLink ? (
+                        <a 
+                          href={applicationData.resumeLink} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="resume-link"
+                        >
+                          {t.view || 'View Resume'}
+                        </a>
+                      ) : (
+                        <p className="detail-value">No resume available</p>
+                      )}
                     </div>
                   </div>
 
@@ -295,7 +385,7 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
                     <div className="detail-item detail-item-query">
                       <MessageCircle className="detail-icon detail-icon-query" />
                       <div className="detail-content-full">
-                        <p className="detail-label">Additional Query</p>
+                        <p className="detail-label">{t.additional || 'Additional Query'}</p>
                         <p className="detail-value">{applicationData.additionalQuery}</p>
                       </div>
                     </div>
@@ -306,14 +396,16 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
                   <button
                     onClick={() => setApplicationData(null)}
                     className="secondary-button"
+                    type="button"
                   >
-                    Check Another Application
+                    {t.check3 || 'Check Another'}
                   </button>
                   <button
                     onClick={handleClose}
                     className="primary-button"
+                    type="button"
                   >
-                    Close
+                    {t.close || 'Close'}
                   </button>
                 </div>
               </div>
@@ -324,7 +416,6 @@ const ApplicationStatusModal = ({ isOpen, onClose }) => {
     </div>
   );
 };
-
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -556,9 +647,11 @@ useEffect(() => {
       >
         {t.apply} <span className="arrow">↗</span>
       </a></button> */}
-<ApplicationStatusModal 
+        <ApplicationStatusModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} style={{zindex: 2000}}
+        language={language}
+        translations={translations}
       />
       {/* Scroll Text */}
       {/* <div
@@ -646,11 +739,11 @@ useEffect(() => {
       {/* Foreground content */}
       <TecdiaNumber language={language} />
     </section>
-      <section id='Culture'><OrganizationCulture/></section>
+      <section id='Culture'><OrganizationCulture language={language}/></section>
       <div id="vision">
-        <PresidentVision/>
+        <PresidentVision language={language}/>
       </div>
-      <Footer />
+      <Footer language={language}/>
       {/* Background Animation */}
       
     </div>

@@ -452,6 +452,33 @@ body[data-theme='theme-jp'] .btn {
 body[data-theme='theme-cn'] .btn {
   background-color: rgb(0, 85, 255);
 }
+body[data-theme='theme-en'] .submit-button {
+  background-color: orangered !important;
+}
+body[data-theme='theme-jp'] .submit-button {
+  background-color: rgb(2, 221, 2) !important;
+}
+body[data-theme='theme-cn'] .submit-button {
+  background-color: rgb(0, 85, 255) !important;
+}
+body[data-theme='theme-en'] .submitting-button {
+  background-color: orangered !important;
+}
+body[data-theme='theme-jp'] .submitting-button {
+  background-color: rgb(2, 221, 2) !important;
+}
+body[data-theme='theme-cn'] .submitting-button {
+  background-color: rgb(0, 85, 255) !important;
+}
+body[data-theme='theme-en'] .primary-button {
+  background-color: orangered !important;
+}
+body[data-theme='theme-jp'] .primary-button {
+  background-color: rgb(2, 221, 2) !important;
+}
+body[data-theme='theme-cn'] .primary-button {
+  background-color: rgb(0, 85, 255) !important;
+}
 
 body[data-theme='theme-en'] .apply-btn {
   background-color: orangered;
@@ -892,6 +919,7 @@ body[data-theme='theme-jp'] .tec-title-main {
 }
 body[data-theme='theme-cn'] .tec-title-main {
   color: rgb(0, 85, 255);
+  font-size: 100px;
 }
 
 
@@ -1468,6 +1496,7 @@ font-weight: 700;
   .vision-grid {
     grid-template-columns: 1fr 1fr;
   }
+  
 }
 
 .profile-card-wrapper {
@@ -1529,10 +1558,34 @@ font-weight: 700;
 
 .App-body{
   font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
   min-height: 100vh;
   overflow-x: hidden;
   color: #fff;
+}
+body[data-theme='theme-en'] .App-body{
+  background-color: rgb(5, 88, 255);
+  
+}
+
+body[data-theme='theme-jp'] .App-body{
+  background-color: rgb(255, 95, 37)
+}
+
+body[data-theme='theme-cn'] .App-body{
+  background-color: rgba(0, 252, 0, 0.464);
+}
+
+body[data-theme='theme-en'] .contact-head{
+  background-color: rgb(5, 88, 255);
+  
+}
+
+body[data-theme='theme-jp'] .contact-head{
+  background-color: rgb(255, 95, 37)
+}
+
+body[data-theme='theme-cn'] .contact-head{
+  background-color: rgb(0, 191, 0);
 }
 
 .App {
@@ -1573,19 +1626,13 @@ font-weight: 700;
 .header h1 {
   font-size: 4rem;
   font-weight: 900;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   margin-bottom: 15px;
 }
 
 
 .header p {
   font-size: 1.4rem;
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: 300;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  font-weight: 500;
 }
 
 .slider-container {
@@ -2007,6 +2054,13 @@ font-weight: 700;
 
   .product-title {
     font-size: 2rem;
+  }
+
+  .organization-heading{
+      font-size: 3rem;
+  }
+  .organization-paragraph{
+    font-size: 1rem;
   }
 
   .product-description {
@@ -2519,8 +2573,9 @@ font-weight: 700;
 .intro-text {
     font-size: 1.1rem;
     margin-bottom: 30px;
-    color: #555;
     text-align: start;
+    font-weight: 400;
+    font-style: bold;
 }
 
 .section-title {
@@ -2917,10 +2972,7 @@ font-weight: 700;
   font-size: 1.875rem;
   font-weight: 700;
   margin-bottom: 24px;
-  background: linear-gradient(to right, #2563eb, #9333ea);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+ 
 }
 
 .vision-text.primary {

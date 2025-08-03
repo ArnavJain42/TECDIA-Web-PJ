@@ -60,7 +60,7 @@ const TecdiaNumber = ({ language }) => {
       labelPatent: "以上の特許保有",
     },
     cn: {
-      titleMain: "TECDIA",
+      titleMain: "特克迪亚",
       numbers: "数字",
       labelClients: "全球客户",
       labelCountries: "国家",

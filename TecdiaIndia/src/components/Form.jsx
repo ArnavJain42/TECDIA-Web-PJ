@@ -68,8 +68,22 @@ const translations = {
     applyterms: "I agree to the terms and conditions *",
     applyquery: "Additional Query",
     applysubmit: "🚀 Submit Application",
-    applysubmitting: "⏳ Submitting..." 
-
+    applysubmitting: "⏳ Submitting..." ,
+    w: "WORK HARD",
+    p: "PLAY HARD", 
+    l: "LET'S DO THIS!",
+    nameplace: "Enter your full name",
+    emailplace: "your.email@example.com",
+    phoneplace: "Enter ${length} digits for ${country?.country}",
+    positionplace: "Select a position",
+    pos1: "Frontend Developer",
+    pos2: "Backend Developer",
+    pos3: "Full Stack Developer",
+    pos4: "UI/UX Developer",
+    pos5: "Product Manager",
+    po6: "Devops Engineer",
+    linkplace: "Paste your resume link (Google Drive, Dropbox, or direct PDF link)",
+    queryplace: "Any questions or additional information you'd like to share...",
 
   },
   jp: {
@@ -133,7 +147,23 @@ const translations = {
     applyterms: "利用規約に同意します *",
     applyquery: "追加の問い合わせ",
     applysubmit: "🚀 応募を送信" ,
-    applysubmitting: "⏳ 送信中..."
+    applysubmitting: "⏳ 送信中...",
+    w: "働きます",
+      p: "遊びます",    
+      l: "やりましょう！",
+    nameplace: "氏名を入力してください",
+    emailplace: "your.email@example.com",
+    phoneplace: "${country?.country}の電話番号を${length}桁で入力してください",
+    positionplace: "希望する職種を選択してください",
+    pos1: "フロントエンド開発者",
+    pos2: "バックエンド開発者",
+    pos3: "フルスタック開発者",
+    pos4: "UI/UX開発者",
+    pos5: "プロダクトマネージャー",
+    po6: "DevOpsエンジニア",
+    linkplace: "履歴書のリンクを貼り付けてください（Google Drive、Dropbox、またはPDFの直接リンク）",
+    queryplace: "ご質問や追加情報があればご記入ください..."
+
 
 
 
@@ -200,7 +230,22 @@ const translations = {
     applyterms: "我同意条款和条件 *",
     applyquery: "附加查询",
     applysubmit: "🚀 提交申请",
-    applysubmitting: "⏳ 提交中..."
+    applysubmitting: "⏳ 提交中...",
+    w: "努力工作",
+      p: "尽情玩乐",
+      l: "让我们开始吧！",
+    nameplace: "请输入您的全名",
+    emailplace: "your.email@example.com",
+    phoneplace: "请输入${country?.country}的${length}位电话号码",
+    positionplace: "请选择一个职位",
+    pos1: "前端开发工程师",
+    pos2: "后端开发工程师",
+    pos3: "全栈开发工程师",
+    pos4: "UI/UX 开发工程师",
+    pos5: "产品经理",
+    po6: "DevOps 工程师",
+    linkplace: "粘贴您的简历链接（Google Drive、Dropbox 或直接的 PDF 链接）",
+    queryplace: "如有任何问题或其他想分享的信息，请填写..."
 
   },
 };
@@ -1111,7 +1156,7 @@ function ApplicationForm({language}) {
                   value={formData.name}
                   onChange={handleInputChange}
                   style={inputStyle(errors.name)}
-                  placeholder="Enter your full name"
+                  placeholder={t.nameplace}
                 />
                 {errors.name && <span style={errorStyle}>{errors.name}</span>}
               </div>
@@ -1125,7 +1170,7 @@ function ApplicationForm({language}) {
                     value={formData.email}
                     onChange={handleInputChange}
                     style={inputStyle(errors.email)}
-                    placeholder="your.email@example.com"
+                    placeholder={t.emailplace}
                   />
                   {emailValidating && (
                     <div style={{
@@ -1197,7 +1242,7 @@ function ApplicationForm({language}) {
                   {(() => {
                     const country = countryCodes.find(c => c.code === formData.countryCode);
                     const length = Array.isArray(country?.length) ? country.length.join(' or ') : country?.length;
-                    return `Enter ${length} digits for ${country?.country}`;
+                    return t.phoneplace.replace('${length',`${length}`).replace("${country?.country}", `${country?.country}`) ;
                   })()}
                 </div>
               </div>
@@ -1210,13 +1255,13 @@ function ApplicationForm({language}) {
                   onChange={handleInputChange}
                   style={inputStyle(errors.position)}
                 >
-                  <option value="">Select a position</option>
-                  <option value="Frontend Developer">Frontend Developer</option>
-                  <option value="Backend Developer">Backend Developer</option>
-                  <option value="Full Stack Developer">Full Stack Developer</option>
-                  <option value="UI/UX Designer">UI/UX Designer</option>
-                  <option value="Product Manager">Product Manager</option>
-                  <option value="DevOps Engineer">DevOps Engineer</option>
+                  <option value="">{t.positionplace}</option>
+                  <option value="Frontend Developer">{t.pos1}</option>
+                  <option value="Backend Developer">{t.pos2}</option>
+                  <option value="Full Stack Developer">{t.pos3}</option>
+                  <option value="UI/UX Designer">{t.pos4}</option>
+                  <option value="Product Manager">{t.pos5}</option>
+                  <option value="DevOps Engineer">{t.pos6}</option>
                 </select>
                 {errors.position && <span style={errorStyle}>{errors.position}</span>}
               </div>
@@ -1257,7 +1302,7 @@ function ApplicationForm({language}) {
                   marginTop: "0.5rem",
                   textAlign: "center" 
                 }}>
-                  Paste your resume link (Google Drive, Dropbox, or direct PDF link)
+                  {t.linkplace}
                 </div>
               </div>
               {errors.resumeLink && <span style={errorStyle}>{errors.resumeLink}</span>}
@@ -1269,7 +1314,7 @@ function ApplicationForm({language}) {
                 name="additionalQuery"
                 value={formData.additionalQuery}
                 onChange={handleInputChange}
-                placeholder="Any questions or additional information you'd like to share..."
+                placeholder={t.queryplace}
                 style={{ 
                   ...inputStyle(false), 
                   minHeight: "120px", 
@@ -1361,8 +1406,8 @@ function ApplicationForm({language}) {
 }
 
 // Scrolling Banner with Japanese phrases
-function ScrollingBanner() {
-  const bannerText = ["WORK HARD", "PLAY HARD", "LET'S DO THIS!"];
+function ScrollingBanner({language}) {
+  const bannerText = [translations[language].w, translations[language].p, translations[language].l];
 
   return (
     <div
@@ -1446,7 +1491,7 @@ function Form() {
       <AvailablePositions language={language} />
       <ApplicationForm language={language} />
       <ScrollingBanner language={language}/>
-      <Footer />
+      <Footer language={language}/>
     </div>
   );
 }
