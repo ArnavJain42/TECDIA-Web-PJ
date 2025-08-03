@@ -76,13 +76,10 @@ export default function Navbar({
 
           <div className="flex flex-row" style={{padding: '0px 10px'}}>
              <div className="flex items-center">
-            <a
-                href="form"
-                rel="noopener noreferrer"
-            >
+            
             <button className="apply-btn cursor-pointer hover:scale-115" style={{marginRight: '10px'}} onClick={handleApplyClick}>
                 {t.apply} <span className="arrow">↗</span>
-            </button></a>
+            </button>
             </div>
             <div className="flex items-center">
               <div className="flex items-center">
