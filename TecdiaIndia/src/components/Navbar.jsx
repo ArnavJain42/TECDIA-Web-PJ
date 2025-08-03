@@ -77,7 +77,7 @@ export default function Navbar({
                 href="form"
                 rel="noopener noreferrer"
             >
-            <button className="apply-btn" style={{marginRight: '10px'}}>
+            <button className="apply-btn cursor-pointer hover:scale-115" style={{marginRight: '10px'}}>
                 {t.apply} <span className="arrow">↗</span>
             </button></a>
             </div>

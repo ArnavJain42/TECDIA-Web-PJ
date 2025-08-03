@@ -602,7 +602,7 @@ export default function App() {
             {t.logoText}
           </span>
           <p className="landing-para">{t.landingpara} </p>
-          <button className="join-us" onClick={handleApplyClick}>
+          <button className="join-us cursor-pointer hover:scale-115" onClick={handleApplyClick}>
             {t.join}
           </button>
         </div>
