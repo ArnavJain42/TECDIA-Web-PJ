@@ -318,6 +318,7 @@ const ContactCard = ({ location }) => (
               <a
               href="/"
               rel="noopener noreferrer"
+              style={{cursor: 'pointer'}}
             ><button className="apply-btn" style={{position: 'fixed', top: '20px', right: '10px'}}>
               <span className="arrow">↖</span> {t.apply} 
             </button></a>
