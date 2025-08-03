@@ -25,6 +25,9 @@ export default function Navbar({
   const handleContactClick = () => {
     navigate("/contact");
   };
+  const handleApplyClick = () => {
+    navigate("/form");
+  };
   // Get the color class for the current language, or use the default
   return (
     <>
@@ -77,7 +80,7 @@ export default function Navbar({
                 href="form"
                 rel="noopener noreferrer"
             >
-            <button className="apply-btn cursor-pointer hover:scale-115" style={{marginRight: '10px'}}>
+            <button className="apply-btn cursor-pointer hover:scale-115" style={{marginRight: '10px'}} onClick={handleApplyClick}>
                 {t.apply} <span className="arrow">↗</span>
             </button></a>
             </div>
