@@ -74,7 +74,7 @@ export default function OrganizationCulture({ language }) {
     // Add responsive padding to the main section
     <section
       className="organization-section px-4 sm:px-6 lg:px-8"
-      style={{ backgroundColor: "#FB624C" }}
+      style={{ backgroundColor: "#EA5B6F" }}
     >
 
       <div className="organization-wrapper max-w-7xl mx-auto">

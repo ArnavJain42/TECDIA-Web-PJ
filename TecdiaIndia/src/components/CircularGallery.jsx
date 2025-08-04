@@ -325,18 +325,18 @@ class App {
   }
   createMedias(items, bend = 1, textColor, borderRadius, font) {
     const defaultItems = [
-      { image: './WhatsApp Image 2025-07-28 at 21.47.21_267c506e.jpg', text: "" },
-      { image: './WhatsApp Image 2025-08-01 at 00.20.22_c2a01fd8.jpg', text: "" },
-      { image: './WhatsApp Image 2025-08-01 at 00.40.56_e6e7c0ad.jpg', text: "" },
-      { image: './WhatsApp Image 2025-08-01 at 00.42.37_817e9eb8.jpg', text: "" },
-      { image: './WhatsApp Image 2025-08-01 at 00.42.37_817e9eb8.jpg', text: "" },
-      { image: './WhatsApp Image 2025-08-01 at 00.42.38_6fb31f30.jpg', text: "" },
-      { image: './WhatsApp Image 2025-08-01 at 00.42.38_83ef7daa.jpg', text: "" },
-      { image: './WhatsApp Image 2025-08-01 at 00.42.39_920366f5.jpg', text: "" },
-      { image: './WhatsApp Image 2025-08-01 at 01.00.21_dd756837.jpg', text: "" },
-      { image: './WhatsApp Image 2025-08-01 at 01.00.22_88c7c94a.jpg', text: "" },
-      { image: './テクダイヤ移転しました！.png', text: "" },
-      { image: './企業理念.png', text: "" },
+      { image: './org1.jpg', text: "" },
+      { image: './org2.jpg', text: "" },
+      { image: './org3.jpg', text: "" },
+      { image: './org4.jpg', text: "" },
+      { image: './org5.jpg', text: "" },
+      { image: './org6.jpg', text: "" },
+      { image: './org7.jpg', text: "" },
+      { image: './org8.png', text: "" },
+      { image: './org9.jpg', text: "" },
+      { image: './org10.png', text: "" },
+      { image: './org11.png', text: "" },
+      { image: './org12.png', text: "" },
     ];
     const galleryItems = items && items.length ? items : defaultItems;
     this.mediasImages = galleryItems.concat(galleryItems);
